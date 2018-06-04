@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" template="/layout/template.xhtml">
+
+	<ui:define name="content">
+		<a4j:keepAlive beanName="generalParamPage" ajaxOnly="true" />
+		<h:form id="MainForm">
+			<rich:panel>
+				<rich:dataTable id="paramsDatatable"
+					value="#{generalParamPage.generalParams}" var="gp"
+					styleClass="table" headerClass="table -header"
+					columnClasses="table-column"
+					rowClasses="table-odd-row,table-even-row" rows="40">
+					<f:facet name="header">
+						<h:outputText value="General Param Setting" />
+					</f:facet>
+					<rich:column>
+						<f:facet name="header">
+							<h:outputText value="Param Key" />
+						</f:facet>
+						<h:outputText value="#{gp.paramKey}" />
+					</rich:column>
+					<rich:column
+						rendered="#{(gp.paramValue != 'ARC_DEFAULT_MAIL_BODY_TEMPLATE' and gp.paramValue != 'ARC_CAC_SIGNATURE')}">
+						<f:facet name="header">
+							<h:outputText value="Value" />
+						</f:facet>
+						<h:inputText value="#{gp.paramValue}" style="width:450px" />
+					</rich:column>
+					<rich:column
+						rendered="#{(gp.paramValue == 'ARC_DEFAULT_MAIL_BODY_TEMPLATE' or gp.paramValue == 'ARC_CAC_SIGNATURE')}">
+						<f:facet name="header">
+							<h:outputText value="Value" />
+						</f:facet>
+						<h:panelGrid columns="2">
+							<a4j:commandLink value="Download"
+								oncomplete="window.open('#{facesContext.externalContext.requestContextPath}/GPDownloaderServlet','murat.demir','height=200,width=150');"
+								action="#{generalParamPage.downloadParamBlob}"
+								image="#{bundle['image.download']}">
+								<f:setPropertyActionListener value="#{gp}"
+									target="#{generalParamPage.currentParameter}" />
+							</a4j:commandLink>
+							<a4j:commandButton value="Detail" image="#{bundle['image.view']}"
+								reRender="GpDetail,GpDetailPanel"
+								oncomplete="#{rich:component('GpDetailPanel')}.show()">
+								<f:setPropertyActionListener value="#{gp}"
+									target="#{generalParamPage.currentParameter}" />
+							</a4j:commandButton>
+						</h:panelGrid>
+					</rich:column>
+					<f:facet name="footer">
+						<rich:datascroller id="datascroller" />
+					</f:facet>
+				</rich:dataTable>
+				<br />
+				<a4j:commandButton value="Save"
+					oncomplete="#{rich:component('Uyari')}.show()">
+				</a4j:commandButton>
+			</rich:panel>
+		</h:form>
+
+		<h:panelGroup id="Save">
+			<rich:modalPanel id="Uyari">
+				<f:facet name="header">
+					<h:outputText value="Uyari" />
+				</f:facet>
+				<h:form>
+					<h:outputText value="Kaydetmek istiyor musunuz?" />
+					<h:panelGrid columns="2">
+						<a4j:commandButton value="Save"
+							action="#{generalParamPage.updateAll}" reRender="paramsDatatable"
+							oncomplete="#{rich:component('Uyari')}.hide();" />
+						<a4j:commandButton value="Cancel"
+							reRender="MainForm,paramsDatatable"
+							oncomplete="#{rich:component('Uyari')}.hide();" />
+					</h:panelGrid>
+				</h:form>
+			</rich:modalPanel>
+		</h:panelGroup>
+
+		<h:panelGroup id="GpDetail">
+			<rich:modalPanel id="GpDetailPanel" width="560" height="300">
+				<f:facet name="header">
+					<h:outputText value="Runtime Param Details" />
+				</f:facet>
+				<f:facet name="controls">
+					<h:panelGroup>
+						<h:graphicImage value="#{bundle['image.close']}" id="hidelink"
+							styleClass="hidelink" />
+						<rich:componentControl for="GpDetailPanel" attachTo="hidelink"
+							operation="hide" event="onclick" />
+					</h:panelGroup>
+				</f:facet>
+				<h:form enctype="multipart/form-data">
+					<fieldset><legend> <h:outputText
+						value="General Param Table" /> </legend> <h:panelGrid columns="2">
+						<rich:column>
+							<f:facet name="header">
+								<h:outputText value="Param Key" />
+							</f:facet>
+							<h:outputText value="#{generalParamPage.currentParameter.paramKey}" />
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">
+								<h:outputText value="Param Key" />
+							</f:facet>
+							<rich:fileUpload id="documentUploader"
+							fileUploadListener="#{generalParamPage.uploadListener}"
+							acceptedTypes="html,xml" maxFilesQuantity="1"
+							immediateUpload="false" uploadControlLabel="Upload"
+							allowFlash="false">
+						</rich:fileUpload>
+						</rich:column>
+						
+					</h:panelGrid></fieldset>
+
+
+					<br />
+					<h:panelGrid columns="2">
+						<a4j:commandButton value="Update"
+							reRender="MainForm,paramsDatatable"
+							action="#{generalParamPage.updateCurrentGeneralParam}"
+							oncomplete="#{rich:component('GpDetailPanel')}.hide();return false;" />
+						<a4j:commandButton value="Cancel"
+							reRender="MainForm,paramsDatatable"
+							oncomplete="#{rich:component('GpDetailPanel')}.hide();return false;" />
+					</h:panelGrid>
+				</h:form>
+			</rich:modalPanel>
+		</h:panelGroup>
+
+	</ui:define>
+
+</ui:composition>

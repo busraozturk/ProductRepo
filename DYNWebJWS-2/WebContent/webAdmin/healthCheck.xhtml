@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+<head>	
+	<link rel="shortcut icon" href="../resources/favicon.ico"/>
+   	<link rel="stylesheet" type="text/css" href="../resources/style.css"/>
+    <title>FIT eArchive Admin Page</title>
+</head>
+<body>
+
+	<f:view>
+	    	<h:form>
+	        	<strong>System Healthcheck</strong>
+	        	<h:commandButton value="Refresh" action="#{healtCheckManagedBean.refresh}"/>
+	        </h:form>
+	    	<a href="admin.jsf">Admin Home</a>
+	    	<br/>
+	    	
+	        <br/>
+	        <hr/>
+
+	        <div class="healtcheckDiv">
+	        	<h:outputText value="#{healtCheckManagedBean.healthcheckResult}" escape="false"/>
+	        </div>
+    </f:view>
+</body>
+</html>

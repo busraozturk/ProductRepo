@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PROCESS model-entity="JSFProcess">
+ <PROCESS-ITEM NAME="rules:*" PATH="*" SHAPE="24,128,53,170" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:*:0" NAME="item" PATH="*" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="anasayfa::#view#anasayfa.xhtml"
+    NAME="output" PATH="/view/anasayfa.xhtml"
+    TARGET="rules:#view#anasayfa.xhtml" TITLE="anasayfa" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="invoice::#view#invoice.xhtml" NAME="output1"
+    PATH="/view/invoice.xhtml" TARGET="rules:#view#invoice.xhtml"
+    TITLE="invoice" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="analysis::#analysis.xhtml" NAME="output2"
+    PATH="/analysis.xhtml" TARGET="rules:#analysis.xhtml"
+    TITLE="analysis" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="envelope::#view#envelope.xhtml"
+    NAME="output3" PATH="/view/envelope.xhtml"
+    TARGET="rules:#view#envelope.xhtml" TITLE="envelope" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="report::#view#report.xhtml" NAME="output4"
+    PATH="/view/report.xhtml" TARGET="rules:#view#report.xhtml"
+    TITLE="report" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="logger::#view#logs.xhtml" NAME="output5"
+    PATH="/view/logs.xhtml" TARGET="rules:#view#logs.xhtml"
+    TITLE="logger" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="AdminLogger::#webAdmin#admin.xhtml"
+    NAME="output6" PATH="/webAdmin/admin.xhtml"
+    TARGET="rules:#webAdmin#admin.xhtml" TITLE="AdminLogger" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="customers::#view#customers.xhtml"
+    NAME="output8" PATH="/view/customers.xhtml"
+    TARGET="rules:#view#customers.xhtml" TITLE="customers" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="customerinvoiceid::#view#customerinvoiceid.xhtml" NAME="output7"
+    PATH="/view/customerinvoiceid.xhtml"
+    TARGET="rules:#view#customerinvoiceid.xhtml"
+    TITLE="customerinvoiceid" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#view#customers.xhtml"
+  PATH="/view/customers.xhtml" SHAPE="176,368,50,25" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#login.xhtml" PATH="/login.xhtml"
+  SHAPE="32,497,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#login.xhtml:0" NAME="item"
+   PATH="/login.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="loginSuccess::#view#sample.xhtml"
+    NAME="output" PATH="/view/sample.xhtml"
+    TARGET="rules:#view#sample.xhtml" TITLE="loginSuccess" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#view#sample.xhtml" PATH="/view/sample.xhtml"
+  SHAPE="240,513,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#view#invoice.xhtml"
+  PATH="/view/invoice.xhtml" SHAPE="272,145,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#view#envelope.xhtml"
+  PATH="/view/envelope.xhtml" SHAPE="352,240,50,25" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#view#customerinvoiceid.xhtml"
+  PATH="/view/customerinvoiceid.xhtml" SHAPE="304,497,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#view#report.xhtml" PATH="/view/report.xhtml"
+  SHAPE="304,529,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#view#logs.xhtml" PATH="/view/logs.xhtml"
+  SHAPE="304,561,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#analysis.xhtml" PATH="/analysis.xhtml"
+  SHAPE="304,593,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#webAdmin#admin.xhtml"
+  PATH="/webAdmin/admin.xhtml" SHAPE="304,657,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#webAdmin#admin.jsf"
+  PATH="/webAdmin/admin.jsf" SHAPE="240,993,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#login#adminLogin.xhtml"
+  PATH="/login/adminLogin.xhtml" SHAPE="32,1201,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#login#adminLogin.xhtml:0" NAME="item"
+   PATH="/login/adminLogin.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="admLoginSuccess::#webAdmin#admin.jsf"
+    NAME="output" PATH="/webAdmin/admin.jsf"
+    TARGET="rules:#webAdmin#admin.jsf" TITLE="admLoginSuccess" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#view#generalparam.xhtml"
+  PATH="/view/generalparam.xhtml" SHAPE="304,657,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#view#anasayfa.xhtml"
+  PATH="/view/anasayfa.xhtml" SHAPE="304,33,0,0" model-entity="JSFProcessGroup"/>
+</PROCESS>

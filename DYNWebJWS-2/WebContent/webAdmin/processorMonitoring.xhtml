@@ -1,0 +1,202 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<head>
+<link rel="shortcut icon" href="../resources/favicon.ico" />
+<title>eArchive Processor Monitoring</title>
+
+<link rel="stylesheet" type="text/css" href="../resources/style.css" />
+<link rel="stylesheet" type="text/css"
+	href="../resources/js/css/jquery-ui.css" />
+<link rel="stylesheet" type="text/css"
+	href="../resources/js/css/jquery-ui-timepicker-addon.css" />
+<link rel="stylesheet" type="text/css" href="../resources/style.css" />
+
+<script src="../resources/js/jquery-1.9.1.js"></script>
+<script src="../resources/js/jquery-ui-1.10.3.js"></script>
+<script src="../resources/js/jquery-ui-timepicker-addon.js"></script>
+
+<script>
+			$(function() {
+				$( "#filterForm\\:startDate" ).datetimepicker({
+					dateFormat: 'dd/mm/yy',
+					timeFormat: 'HH:mm:ss'
+				});
+				$( "#filterForm\\:endDate" ).datetimepicker({
+					dateFormat: 'dd/mm/yy',
+					timeFormat: 'HH:mm:ss'
+				});
+				$( "#accordion" ).accordion();
+			});
+		</script>
+</head>
+<body>
+<f:view>
+	<h:form>
+		<strong>Processor Monitoring</strong>
+		<h:commandButton value="Refresh"
+			action="#{processorMonitorManagedBean.refresh}" />
+	</h:form>
+	<a href="admin.jsf">Admin Home</a>
+	<br />
+	<br />
+
+
+	<h:form id="filterForm">
+    		SenderID: <h:inputText size="11"
+			value="#{processorMonitorManagedBean.senderID}" />&nbsp;
+    		UUID: <h:inputText size="36"
+			value="#{processorMonitorManagedBean.uuid}" />&nbsp;
+    		StartDate: <h:inputText id="startDate" size="16"
+			value="#{processorMonitorManagedBean.startDate}" />&nbsp;
+    		EndDate: <h:inputText id="endDate" size="16"
+			value="#{processorMonitorManagedBean.endDate}" />&nbsp;
+			ResultSize: <h:inputText id="ResultSize" size="16"
+			value="#{processorMonitorManagedBean.resultSize}" />&nbsp;
+    		<h:commandButton value="Filter"
+			action="#{processorMonitorManagedBean.refresh}" />
+		<h:commandButton value="Reset"
+			action="#{processorMonitorManagedBean.reset}" />
+	</h:form>
+	<br />
+
+	<h:form>
+		<h:commandButton value="InvoiceSigner"
+			styleClass="#{processorMonitorManagedBean.logTypeCode == processorMonitorManagedBean.invoiceSignerLogType ? 'customButtonInverse' : 'customButton'}"
+			action="#{processorMonitorManagedBean.refresh}">
+			<f:setPropertyActionListener
+				value="#{processorMonitorManagedBean.invoiceSignerLogType}"
+				target="#{processorMonitorManagedBean.logTypeCode}" />
+		</h:commandButton>
+		<h:commandButton value="EnvelopeExtracter"
+			styleClass="#{processorMonitorManagedBean.logTypeCode == processorMonitorManagedBean.xsltControllerLogType ? 'customButtonInverse' : 'customButton'}"
+			action="#{processorMonitorManagedBean.refresh}">
+			<f:setPropertyActionListener
+				value="#{processorMonitorManagedBean.xsltControllerLogType}"
+				target="#{processorMonitorManagedBean.logTypeCode}" />
+		</h:commandButton>
+		<h:commandButton value="FileEnvelopeExtracter"
+			styleClass="#{processorMonitorManagedBean.logTypeCode == processorMonitorManagedBean.fileEnvExtracterLogType ? 'customButtonInverse' : 'customButton'}"
+			action="#{processorMonitorManagedBean.refresh}">
+			<f:setPropertyActionListener
+				value="#{processorMonitorManagedBean.fileEnvExtracterLogType}"
+				target="#{processorMonitorManagedBean.logTypeCode}" />
+		</h:commandButton>
+		<h:commandButton value="MailSender"
+			styleClass="#{processorMonitorManagedBean.logTypeCode == processorMonitorManagedBean.mailSenderLogType ? 'customButtonInverse' : 'customButton'}"
+			action="#{processorMonitorManagedBean.refresh}">
+			<f:setPropertyActionListener
+				value="#{processorMonitorManagedBean.mailSenderLogType}"
+				target="#{processorMonitorManagedBean.logTypeCode}" />
+		</h:commandButton>
+		<h:commandButton value="FtpUploader"
+			styleClass="#{processorMonitorManagedBean.logTypeCode == processorMonitorManagedBean.ftpUploaderLogType ? 'customButtonInverse' : 'customButton'}"
+			action="#{processorMonitorManagedBean.refresh}">
+			<f:setPropertyActionListener
+				value="#{processorMonitorManagedBean.ftpUploaderLogType}"
+				target="#{processorMonitorManagedBean.logTypeCode}" />
+		</h:commandButton>
+		<h:commandButton value="SignerNotifier"
+			styleClass="#{processorMonitorManagedBean.logTypeCode == processorMonitorManagedBean.signerNotifierLogType ? 'customButtonInverse' : 'customButton'}"
+			action="#{processorMonitorManagedBean.refresh}">
+			<f:setPropertyActionListener
+				value="#{processorMonitorManagedBean.signerNotifierLogType}"
+				target="#{processorMonitorManagedBean.logTypeCode}" />
+		</h:commandButton>
+		<h:commandButton value="DBCleaner"
+			styleClass="#{processorMonitorManagedBean.logTypeCode == processorMonitorManagedBean.dbCleanerLogType ? 'customButtonInverse' : 'customButton'}"
+			action="#{processorMonitorManagedBean.refresh}">
+			<f:setPropertyActionListener
+				value="#{processorMonitorManagedBean.dbCleanerLogType}"
+				target="#{processorMonitorManagedBean.logTypeCode}" />
+		</h:commandButton>
+		<h:commandButton value="GetUserList"
+			styleClass="#{processorMonitorManagedBean.logTypeCode == processorMonitorManagedBean.getUserListLogType ? 'customButtonInverse' : 'customButton'}"
+			action="#{processorMonitorManagedBean.refresh}">
+			<f:setPropertyActionListener
+				value="#{processorMonitorManagedBean.getUserListLogType}"
+				target="#{processorMonitorManagedBean.logTypeCode}" />
+		</h:commandButton>
+		<br />
+		<br />
+		<h:commandButton value="ReportGeneration"
+			styleClass="#{processorMonitorManagedBean.logTypeCode == processorMonitorManagedBean.reportGenerationLogType ? 'customButtonInverse' : 'customButton'}"
+			action="#{processorMonitorManagedBean.refresh}">
+			<f:setPropertyActionListener
+				value="#{processorMonitorManagedBean.reportGenerationLogType}"
+				target="#{processorMonitorManagedBean.logTypeCode}" />
+		</h:commandButton>
+		<h:commandButton value="ReportSigner"
+			styleClass="#{processorMonitorManagedBean.logTypeCode == processorMonitorManagedBean.reportSignerLogType ? 'customButtonInverse' : 'customButton'}"
+			action="#{processorMonitorManagedBean.refresh}">
+			<f:setPropertyActionListener
+				value="#{processorMonitorManagedBean.reportSignerLogType}"
+				target="#{processorMonitorManagedBean.logTypeCode}" />
+		</h:commandButton>
+		<h:commandButton value="ReportWssGetBatcStatus"
+			styleClass="#{processorMonitorManagedBean.logTypeCode == processorMonitorManagedBean.reportWssGetBtchStatusLogType ? 'customButtonInverse' : 'customButton'}"
+			action="#{processorMonitorManagedBean.refresh}">
+			<f:setPropertyActionListener
+				value="#{processorMonitorManagedBean.reportWssGetBtchStatusLogType}"
+				target="#{processorMonitorManagedBean.logTypeCode}" />
+		</h:commandButton>
+		<h:commandButton value="ReportWssSendDocument"
+			styleClass="#{processorMonitorManagedBean.logTypeCode == processorMonitorManagedBean.reportWssSendDocumentLogType ? 'customButtonInverse' : 'customButton'}"
+			action="#{processorMonitorManagedBean.refresh}">
+			<f:setPropertyActionListener
+				value="#{processorMonitorManagedBean.reportWssSendDocumentLogType}"
+				target="#{processorMonitorManagedBean.logTypeCode}" />
+		</h:commandButton>
+	</h:form>
+	<br />
+
+	<h:form>
+		<div id="accordion">
+
+		<h3><strong>BG Job Logs</strong></h3>
+		<div class="accLongTableDiv"><h:dataTable id="logDataTable"
+			value="#{processorMonitorManagedBean.logs}" var="log"
+			styleClass="table" headerClass="table-header"
+			columnClasses="table-column"
+			rowClasses="table-odd-row,table-even-row">
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="IDX" />
+				</f:facet>
+				<h:outputText value="#{log.idx}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="SenderID" />
+				</f:facet>
+				<h:outputText value="#{log.cidentifier}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="UUID" />
+				</f:facet>
+				<h:outputText value="#{log.uuid}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="InsertDateTime" />
+				</f:facet>
+				<h:outputText value="#{log.insertDateTime}" />
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Log" />
+				</f:facet>
+				<h:outputText value="#{log.log}" />
+			</h:column>
+		</h:dataTable></div>
+		</div>
+	</h:form>
+</f:view>
+
+</body>
+</html>

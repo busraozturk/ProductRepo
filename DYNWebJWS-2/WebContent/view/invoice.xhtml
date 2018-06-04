@@ -1,0 +1,254 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" template="/layout/template.xhtml">
+
+	<ui:define name="content">
+
+		<rich:panel id="invPanel">
+			<h:form id="invoicePageFormId">
+				<a4j:poll id="poll" interval="2000"
+					enabled="#{invoicePage.pollEnabled}" reRender="poll,retriggerPanel" />
+
+				<rich:tabPanel>
+					<rich:tab label="UUID ile ara">
+						<h:panelGrid columns="2">
+							<h:outputText value="Fatura UUID :" />
+							<h:inputText value="#{invoicePage.invUuid}" style="width:350px" />
+						</h:panelGrid>
+						<a4j:commandButton value="ara" action="#{invoicePage.findByUuid}"
+							reRender="invDataTable" />
+
+					</rich:tab>
+					<rich:tab label="VKN ve Fatura ID ile ara">
+						<h:panelGrid columns="2">
+							<h:outputText value="VKN :" />
+							<h:inputText value="#{invoicePage.vkn}" style="width:350px" />
+
+							<h:outputText value="Fatura No :" />
+							<h:inputText value="#{invoicePage.invId}" style="width:350px" />
+						</h:panelGrid>
+
+						<a4j:commandButton value="Ara" action="#{invoicePage.findById}"
+							reRender="invDataTable" />
+					</rich:tab>
+					<rich:tab label="Invoice retrigger">
+						<h:panelGrid id="retriggerPanel" columns="2">
+							<h:outputText value="UUIDs:" />
+							<h:inputTextarea value="#{invoicePage.commaSeperatedUuids}"
+								style="width: 370px; height: 100px;" />
+
+							<h:outputText value="Logs:" />
+							<rich:dataList var="log" value="#{invoicePage.logs}">
+								<h:outputText value="#{log.time} #{log.uuid} #{log.message}" />
+							</rich:dataList>
+							<a4j:commandButton value="Retrigger"
+								action="#{invoicePage.retrigger}" reRender="retriggerPanel,poll" />
+							<a4j:commandButton style="width:120px" id="control"
+								value="#{invoicePage.pollEnabled?'Stop':'Start'} Polling"
+								reRender="poll, retriggerPanel">
+								<a4j:actionparam name="polling" value="#{!invoicePage.pollEnabled}"
+									assignTo="#{invoicePage.pollEnabled}" />
+							</a4j:commandButton>
+
+						</h:panelGrid>
+					</rich:tab>
+				</rich:tabPanel>
+
+				<br />
+
+				<rich:dataTable id="invDataTable" value="#{invoicePage.invoices}"
+					var="inv" styleClass="table" headerClass="table -header"
+					columnClasses="table-column"
+					rowClasses="table-odd-row,table-even-row" rows="20">
+					<f:facet name="header">
+						<h:outputText value="Find Invoice" />
+					</f:facet>
+					<rich:column>
+						<f:facet name="header">
+							<h:outputText value="UUID" />
+						</f:facet>
+						<h:outputText value="#{inv.UUID}" />
+					</rich:column>
+					<rich:column>
+						<f:facet name="header">
+							<h:outputText value="Sender ID" />
+						</f:facet>
+						<h:outputText value="#{inv.customer.pk.cidentifier}" />
+					</rich:column>
+					<rich:column>
+						<f:facet name="header">
+							<h:outputText value="Sender Branch" />
+						</f:facet>
+						<h:outputText value="#{inv.customer.pk.cbranch}" />
+					</rich:column>
+					<rich:column>
+						<f:facet name="header">
+							<h:outputText value="Receiver ID" />
+						</f:facet>
+						<h:outputText value="#{inv.receiverID}" />
+					</rich:column>
+					<rich:column>
+						<f:facet name="header">
+							<h:outputText value="Invoice ID" />
+						</f:facet>
+						<h:outputText value="#{inv.invoiceID}" />
+					</rich:column>
+					<rich:column>
+						<f:facet name="header">
+							<h:outputText value="Doc Type" />
+						</f:facet>
+						<h:outputText value="#{inv.docType}" />
+					</rich:column>
+					<rich:column>
+						<f:facet name="header">
+							<h:outputText value="İssue Date" />
+						</f:facet>
+						<h:outputText value="#{inv.issueDate}" />
+					</rich:column>
+					<rich:column>
+						<f:facet name="header">
+							<h:outputText value="Proccess Date" />
+						</f:facet>
+						<h:outputText value="#{inv.processDate}" />
+					</rich:column>
+					<rich:column>
+						<f:facet name="header">
+							<h:outputText value="Output Options" />
+						</f:facet>
+						<h:outputText value="#{inv.outputOptions}" />
+					</rich:column>
+					<rich:column>
+						<f:facet name="header">
+							<h:outputText value="Status" />
+						</f:facet>
+						<h:outputText value="#{inv.status.statusId}" />
+					</rich:column>
+					<rich:column>
+						<f:facet name="header">
+							<h:outputText value="Payable Amount" />
+						</f:facet>
+						<h:outputText value="#{inv.payableAmount}" />
+					</rich:column>
+					<rich:column>
+						<f:facet name="header">
+							<h:outputText value="Currency ID" />
+						</f:facet>
+						<h:outputText value="#{inv.currencyID}" />
+					</rich:column>
+					<rich:column>
+						<f:facet name="header">
+							<h:outputText value="Sign Attamp" />
+						</f:facet>
+						<h:outputText value="#{inv.signAttamp}" />
+					</rich:column>
+					<rich:column>
+						<f:facet name="header">
+							<h:outputText value="Detail" />
+						</f:facet>
+						<a4j:commandButton value="Detail" image="#{bundle['image.view']}"
+							reRender="detailPanel,Detail"
+							oncomplete="#{rich:component('Detail')}.show()" />
+					</rich:column>
+
+				</rich:dataTable>
+				<br />
+
+			</h:form>
+		</rich:panel>
+
+
+		<h:panelGroup id="detailPanel">
+			<rich:modalPanel id="Detail" width="560" height="500">
+				<f:facet name="header">
+					<h:outputText value="Invoice Details" />
+				</f:facet>
+				<h:form>
+					<h:panelGrid columns="2">
+						<h:outputText value="Adı Soyadı :" style="width: 370px;" />
+						<h:outputText
+							value="#{invoicePage.invoice.invoiceDetail.adiSoyadi}"
+							style="width: 370px;" />
+
+						<h:outputText value="TCKN :" style="width: 370px;" />
+						<h:outputText value="#{invoicePage.invoice.invoiceDetail.tckn}"
+							style="width: 370px;" />
+
+						<h:outputText value="Gönderim Şekli :" style="width: 370px;" />
+						<h:outputText
+							value="#{invoicePage.invoice.invoiceDetail.erepsendt}"
+							style="width: 370px;" />
+
+						<h:outputText value="UUID :" style="width: 370px;" />
+						<h:outputText value="#{invoicePage.invoice.invoiceDetail.UUID}"
+							style="width: 370px;" />
+
+						<h:outputText value="Unvan :" style="width: 370px;" />
+						<h:outputText value="#{invoicePage.invoice.invoiceDetail.unvan}"
+							style="width: 370px;" />
+
+						<h:outputText value="erepaccno :" style="width: 370px;" />
+						<h:outputText
+							value="#{invoicePage.invoice.invoiceDetail.erepaccno}"
+							style="width: 370px;" />
+
+						<h:outputText value="erepodarac :" style="width: 370px;" />
+						<h:outputText
+							value="#{invoicePage.invoice.invoiceDetail.erepodarac}"
+							style="width: 370px;" />
+
+						<h:outputText value="euprcarr1 :" style="width: 370px;" />
+						<h:outputText
+							value="#{invoicePage.invoice.invoiceDetail.euprcarr1}"
+							style="width: 370px;" />
+
+						<h:outputText value="euprcarr1name :" style="width: 370px;" />
+						<h:outputText
+							value="#{invoicePage.invoice.invoiceDetail.euprcarr1name}"
+							style="width: 370px;" />
+
+						<h:outputText value="euprcarr2 :" style="width: 370px;" />
+						<h:outputText
+							value="#{invoicePage.invoice.invoiceDetail.euprcarr2}"
+							style="width: 370px;" />
+
+						<h:outputText value="euprcarr2name2 :" style="width: 370px;" />
+						<h:outputText
+							value="#{invoicePage.invoice.invoiceDetail.euprcarr2name2}"
+							style="width: 370px;" />
+
+						<h:outputText value="euprpay :" style="width: 370px;" />
+						<h:outputText value="#{invoicePage.invoice.invoiceDetail.euprpay}"
+							style="width: 370px;" />
+
+						<h:outputText value="euprpaydate :" style="width: 370px;" />
+						<h:outputText
+							value="#{invoicePage.invoice.invoiceDetail.euprpaydate}"
+							style="width: 370px;" />
+
+						<h:outputText value="euprpaydeliv :" style="width: 370px;" />
+						<h:outputText
+							value="#{invoicePage.invoice.invoiceDetail.euprpaydeliv}"
+							style="width: 370px;" />
+
+						<h:outputText value="euprweburi :" style="width: 370px;" />
+						<h:outputText
+							value="#{invoicePage.invoice.invoiceDetail.euprweburi}"
+							style="width: 370px;" />
+
+						<a4j:commandButton value="OK"
+							oncomplete="#{rich:component('Detail')}.hide();"
+							style="width: 125px;" />
+						<a4j:commandButton value="Cancel"
+							oncomplete="#{rich:component('Detail')}.hide();"
+							style="width: 125px;" />
+					</h:panelGrid>
+				</h:form>
+			</rich:modalPanel>
+
+		</h:panelGroup>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,1342 @@
+=================================================================================================================================
+v1.49
+2018.01.12
+=================================================================================================================================
+
+- ARC_STATUS tablosunun cachelenmesinde STATUS_ID ile yapılan sorgulamadaki hata düzeltildi.
+- Görüntü alamama ve şema şematron hatalarında sistem hatası maili atılması kaldırıldı.
+
+Gecis Oncesi Hazirliklar:
+1. Tum joblar durdurulur ve silinir.
+2. Asagidaki DB Scriptleri calistirilir: yok
+
+Gecis sonrasi hazirliklar:
+1. Tüm joblar yeniden uygun şekilde kurulur.
+
+Gecis sonrasi kontroller:
+1. Statuler ve runtime parametrelerinin cache'den zamaninda ve duzgun olarak okunabildigi loglardan goruntulenebilmeli.
+2. getUserlist servisinde, mukellef listesinin dogru ve performansli sekilde alinabildigi gozlemlenmeli. 
+
+
+
+=================================================================================================================================
+v1.48
+2018.01.08
+=================================================================================================================================
+
+- WKHTML2PDF kutuphanesi ile pdf goruntu olusturabilme ozelligi musteri basina ayarlanabilir hale getirildi.
+- ARC_STATUS ve ARC_GENERAL_PARAM tablolari memoryde cachelenerek daha performansli okuma saglandi.
+- WS API uzerinden sunulan GIB e-Fatura mukellef listesinin zipli halinin memoryde cache te tutularak gerektiginde memoryden okunarak WS api DEN SUNULMASI SAGLANDI.
+- Bulut sistemlerde, cac:Signature dugumu ARC_GENERAL_PARAM tablosundan cache yoluyla okunmaya baslandi.
+- Blob deger tutan runtime parametrelerinin admin ekranlarindan indirilebilmesi ve dosya olarak blob degerlerinin yuklenebilmesi saglandi.
+- Versiyon gecmisi bilgisi admin ekranlarina eklendi.
+- Admin ekranlarindaki musteri ayarlari sayfasina, imza uygulamasi test edicisi eklendi.
+- Euromessage hesabi ile healthcheck maili gonderebilme destegi eklendi.
+- Admin ekranlarindaki musteri ayarlari sayfasina, smtp/euromessage test ozelligi eklendi.
+- Admin ekranlarindaki musteri ayarlari sayfalarinda report waiting day parametresi ayarlanabilir hale getirildi.
+- versiyon numarasinin healthcheck maillerinde gelmesi saglandi.
+
+
+Gecis Oncesi Hazirliklar:
+1. Tum joblar durdurulur ve silinir.
+2. Asagidaki DB Scriptleri calistirilir: v2.2 to v2.3.sql
+
+Gecis sonrasi hazirliklar:
+1. cac:signature verisi admin ekranindan ARC_CAC_SIGNATURE parametresine tanimlanmali.
+2. https://wkhtmltopdf.org/downloads.html adresinden wkhtmltopdf uygulamasinin 'for Windows XP/2003 or later; standalone' bundle'i, sema sematron dosyalarinin bulundugu,
+EARVIS klasoru altina su path'e kurulmali: "..EARSIV\wkhtml2pdf\wkhtmltopdf"
+3. ARC_GENERAL_PARAM tablosundaki ARC_WKHTML2PDF_PATH parametresi wkhtmltopdf in kuruldugu dizin olarak setlenmeli: OR: "D:/EARSIV/wkhtml2pdf/wkhtmltopdf/bin/wkhtmltopdf.exe"
+
+Gecis sonrasi kontroller:
+1. Statuler ve runtime parametrelerinin cache'den zamaninda ve duzgun olarak okunabildigi loglardan goruntulenebilmeli.
+2. getUserlist servisinde, mukellef listesinin dogru ve performansli sekilde alinabildigi gozlemlenmeli.
+3. Imzalanan faturalarin cac:signature dugumlerinin dogru oldugu gozlemlenebilmeli.
+4. ARC_DEFAULT_MAIL_BODY_TEMPLATE xml inin admin ekranindan indirilebildigi gozlemlenmeli.
+5. Versiyon gecmisinin admin ekranlarindan dogru sekilde gorulebildigi gozlemlenmeli.
+6. Admin ekranindan herhangibir musterinin ayarlari sayfasindan imza uygulamalarinin calisirligi test edilmeli.
+7. e-Mail ayarlari yapilmis olan 2 musterinin (1 euromessage hesabi olan bir de smtp kullanan) admin ekranlarindan e-Posta gonderim testi yapilabilmeli.
+8. Gelen healthcheck maillerinde sistemin versiyon bilgisinin yer aldigi takip edilmeli.
+9. 1111111111'li vkn nin daha onceden gonderilmis bir faturasinin goruntusu musteri ayarlarindan degisiklik yapilarak pd4ml ve wkhtmltopdf ile ayri alinabildigi test edilmeli.
+Ayni faturanin e maili musteri ayarlarinda pd4ml ayarliyken ve wkhtmltopdf ayarliyken ayri ayri yeniden tetiklenmeki ve olusan pdf'in goruntuleri karsilastirilmali. 
+
+
+=================================================================================================================================
+v1.47
+2017.11.27
+=================================================================================================================================
+
+-- deploy sonrasi ARC_GENERAL_PARAM tablosuna yapilan otomatik insert'ler duzeltildi. (tablo alan isismleri degismisti.)
+-- sistem varsayilan e-posta sablonu ile e-posta gonderiminde bug fix yapildi.
+-- gereksiz yorumlar kaldirildi.
+
+Gecis Oncesi Hazirliklar:
+1. Tum joblar durdurulur ve silinir.
+2. Asagidaki DB Scriptleri calistirilir:  
+- migration v2.2 to v2.3.sql
+
+Gecis sonrasi kontroller:
+1. Versiyon numarasinin v1.47 oldugu gozlemlenir.
+2. Admin ekranlarinin calisrligi gozlemlenir.
+3. Ws apinin sorunsuz calistigi gozlemlenir.
+
+=================================================================================================================================
+v1.46
+2017.11.20
+=================================================================================================================================
+
+-- default_mail_body ile mail gonderimi yapilabilmesi saglandi.
+-- datasource yaratamadigimiz sistemler icin, deployment ile datasource olusturabilmek icin harici bir datasource projesi, git reposuna eklendi
+-- ARC_GENERAL_PARAM tablosunda alan isimleri, isimlendirme konvansiyonuna uygun hale getirildi.
+
+
+Gecis Oncesi Hazirliklar:
+1. Tum joblar durdurulur ve silinir.
+2. Asagidaki DB Scriptleri calistirilir:  
+- migration v2.1 to v2.2.sql
+
+
+
+Gecis sonrasi kontroller:
+1. ARC_GENERAL_PARAM tablosunda PARAM_KEY = ARC_DEFAULT_MAIL_BODY_TEMPLATE olan satirin PARAM_VALUE_BLOB alaninda varsayilan mail sablonu yuklenir.
+2. Musteri ayarlarindan, varsayilan e posta sablonu bir musteri icin aktif edilir.
+3. 2. Adimda ayarlamasi yapilan musteri icin fatura gonderilerek, mailinin body kismi varsayilan body ile olusturulmus mu, parametreler dogru setlenmis mi kontrol edilir.
+
+=================================================================================================================================
+v1.45
+2017.11.06
+=================================================================================================================================
+
+-- zarftan cikarilmamis faturalarin retrigger edildigi anda entity butunlugu olmamasindan dolayi olusan hata duzeltildi.
+-- anlik fatura gonderim servisinde (sendInvoice) , anlik olarak imzali ubl in donulebilmesi saglandi.
+
+
+
+Gecis Oncesi Hazirliklar:
+1. Tum joblar durdurulur ve silinir.
+2. Asagidaki DB Scriptleri calistirilir:
+
+DB Script'i yok
+
+Gecis sonrasi kontroller:
+1.Zarf olarak gonderilmis ancak, henuz zarf acma job i calismamis bir fatura icin(100 statusundeki bri fatura icin) retrigger servisi ile yeniden mail gonderme istegi yapilarak, exception firlatmadigi test edilmeli.
+2.Tekli fatura gonderim servisinde (senInvoice) anlik olarak xml cikti talep edilmeli ve imzali YBL in dondugu gorulmeli. Ardindan imza uygulamasi kapaliyken de faturanin db ye kaydedildigi ve basarili mesaj donuldugu, sadece imzali ubl'in donulmedigi kontrol edilmeli.
+
+=================================================================================================================================
+v1.44
+----.--.--
+=================================================================================================================================
+
+--InvoiceSigner, EnvelopeExtracter, FileEnvelopeExtracter, MailSender joblarindaki loglar detaylandirildi.
+--getStatus methodunda, Eger fatura iptal edilmisse aciklama kismina "Fatura iptal Edilmistir" yazilmasi.
+--getStatus methodunda, tek VKN/TCKN ile sorgulama yapildiginda fault hatasi yerine parametrelerin eksik oldugunu donen response donulmesi.
+
+
+Gecis Oncesi Hazirliklar:
+1. Tum joblar durdurulur ve silinir.
+2. Asagidaki DB Scriptleri calistirilir:
+
+DB Script'i yok
+
+Gecis sonrasi kontroller:
+1.InvoiceSigner, EnvelopeExtracter, FileEnvelopeExtracter, MailSender joblarindaki loglar kontrol edilip, "Fatura isleme alindi" logunun onune "Adet" eklenip eklenmedigi kontrol edilmeli.
+2.getStatus methodunda sorgulama yapildiginda, Eger fatura iptal edilmisse aciklama kismina "Fatura iptal Edilmistir" yazilimi kontrol edilecek.
+3.getStatus methodunda, tek VKN/TCKN ile sorgulama yapildiginda fault hatasi yerine parametrelerin eksik oldugunu donen response donulmesi test edilecek.
+
+=================================================================================================================================
+v1.43
+----.--.--
+=================================================================================================================================
+
+--Raporlama jobinin sadece GIB durumu aktif olan musteriler icin calismasi
+--cancelInvoice, getStatus, getSignedInvoice, getInvoiceDocument ws methodlarinda musteri no(custInvId) ile islem yapilmasi
+--Raporlamada geriye donuk fatura birakilmamasi icin fazladan bir ay geriye bakilmasi
+--Sematron kontrollerinde transformer a type parametresinin gecilmesi
+
+
+Gecis Oncesi Hazirliklar:
+1. Tum joblar durdurulur ve silinir.
+2. Asagidaki DB Scriptleri calistirilir:
+
+DB Script'i yok
+
+Gecis sonrasi kontroller:
+1.Raporlama jobinin sadece GIB durumu aktif olan musteriler icin calismasi test edilecek
+2.cancelInvoice, getStatus, getSignedInvoice, getInvoiceDocument ws methodlarinda musteri no(custInvId) ile islem yapilmasi test edilecek
+3.Geriye donuk raporlama doneminden onceki bir aya da rapor olusturulmasi kontrol edilecek
+4.Sematron kontrollerinde fatura ProfileID'leri EARSIVFATURA haricindeki butun faturalar icin hata kontrolu yapilacak
+5.cancelInvoice, getStatus, getSignedInvoice, getInvoiceDocument servis methodlari proxy ve portalden test edilecek.
+
+
+=================================================================================================================================
+v1.42
+----.--.--
+=================================================================================================================================
+
+--EUROMSG mail gonderimlerinde service ticket timeout olmussa yeniden alinmasi ve EM maillerinin de SMTP gibi 3 kez denenmesi
+--JMS kullanan joblarin 1000'den fazla kaydi isleme alip update yapabilmesi
+
+
+Gecis Oncesi Hazirliklar:
+1. Tum joblar durdurulur ve silinir.
+2. Asagidaki DB Scriptleri calistirilir:
+
+DB Script'i yok
+
+Gecis sonrasi kontroller:
+1.EUROMSG mail gonderimlerinde service ticket timeout olmussa yeniden alinmasi ve EM maillerinin de SMTP gibi 3 kez denenmesi kontrol edilecek
+2.JMS kullanan joblarin 1000'den fazla kaydi isleme alip update yapabildigi test edilecek
+
+
+=================================================================================================================================
+v1.41
+----.--.--
+=================================================================================================================================
+
+--HealthCheck ekrarninda rapolanmamis belgeler yil-gun e gore surali olacak sekilde guncellendi
+--HealthCheck ekrarninda aylik istatistiklerden SMTP ve SFTP istatistikleri kaldirildi
+
+
+Gecis Oncesi Hazirliklar:
+1. Tum joblar durdurulur ve silinir.
+2. Asagidaki DB Scriptleri calistirilir:
+
+DB Script'i yok
+
+Gecis sonrasi kontroller:
+1.HealthCheck erkanina giris yapilarak raporlanmamis belgelerin aylara gore sirali oldugi kontrol edilir.
+2.HealthCheck ekrarninda aylik istatistiklerde SMTP ve SFTP notifikasyonlarinin gelmedigi kontrol edilir.
+
+
+=================================================================================================================================
+v1.40
+----.--.--
+=================================================================================================================================
+
+--ARC_CUSTOMER_SETTING tablosunda PORTAL_MANUEL_INV adinda alan eklendi.(OP ve Portalden kullanilacak)
+--HealthCheck sayfasi detaylandirildi
+--ARC_NTF_tablosuna Ayarlar eksik seklinde kayit atilmayacak
+--retrigger servisinde coklu mail gonderimindeki hata giderildi
+--imzalama isleminde atilan logda eksik olan VKN bilgisi eklendi
+--uretilen fatura ID'lerin sematrona uygun olmasi kontrolu eklendi
+--Sistem hatasi maillerinde gereksiz olan bir durum mail atilmayacak sekilde duzeltildi
+--ARC_CUSTOMER_SETTING tablosuna FITEUROMSG alani eklendi
+
+
+Gecis Oncesi Hazirliklar:
+1. Tum joblar durdurulur ve silinir.
+2. Asagidaki DB Scriptleri calistirilir:
+
+//FIT Test, FIT Bulut PREPROD ve PROD ortamlarinda calistirilmistir.
+ALTER TABLE ARC_CUSTOMER_SETTING ADD FIT_EUROMSG NUMBER(5,0);
+ALTER TABLE ARC_CUSTOMER_SETTING ADD PORTAL_MANUEL_INV NUMBER(5,0);
+
+Gecis sonrasi kontroller:
+1.ARC_CUSTOMER_SETTING tablosuna yeni alanlarin eklendigi kontrol edilecek.
+2.HealthCheck sayfasina girilerek kontrol edilecek.
+3.Test VKN'sinin SMTP ve SFTP yetkileri kalirilarak fatura gonderimi yapilarak daha onceden ARC_NTF tablosuna "Ayarlar eksik" olarak attigimiz kaydin atilmadigi test edilecek.
+4.Imza Job'inin loglarinda VKN'bilgisinin dolulugu kontrol edilecek
+5.Test VN'sinin Fatura ID oneki turkce karakter ile degistirilip fatura gonderimi yapilacak ve faturanin sisteme alinmadigi ve donen hata mesajinin dogrulugu kontrol edilecek.
+6.retrigger servisinden bir faturanin mail gonderiminin birden fazla aliciya gonderilmesi test edilecek.
+7.Sistem hatalari takip edilerek kaldirilan durumun mail atilmadigi kontrol edlecek.
+8.Deploymenttan sonra 1111111111 nolu vknden fatura gonderilerek musteri ayarlarinin okunabildigi kontrol edilmelidir.
+
+
+=================================================================================================================================
+v1.39_hotfix
+----.--.--
+=================================================================================================================================
+--GenericMarshallUnmarshallUtil icindeki static contexti kullanmayan yerler kullanimdan kaldirildi.
+--getInvoiceDocument servisi ile goruntu verme servisi, faturanin imzalanmasini beklemeden 105 statusundeki ve ustundekilerin goruntusunu verecek.
+Gecis Oncesi Hazirliklar:
+1. Tum joblar durdurulur ve silinir.
+2. Asagidaki DB Scriptleri calistirilir:
+
+DB Scripi yok
+
+3. Uygulama deploy edilir.
+4. SAP AS JAVA stop edilir. 
+5. Guncel sema dosyalari sunucuya tasinir.
+6. SAP AS JAVA start edilir.
+7. Tum joblar uygun sunucular uzerinde yeniden kurulur.
+
+Gecis sonrasi kontroller:
+retrigger web servisi ile sftp,smtp tetiklemesi, fatura iptal, tekli fatura gonderim, jobla fatura imzalama
+jobla sftp, smtp gonderimi, ntfde kayitli mail body'nin null olmasi durumu da ayrica test edilmeli
+tekli fatura gonderim wsi, zarf acma job inda kopyalanan signature dugumu test edilmeli
+tekli fatura gonderim
+tekli gonderimde responsive output donulmesi, ID nin bulutta uretildigi senaryonun test edilmesi, zarfli gonderimde id nin buliutta uretildigi senaryonun test edilmesi
+
+
+=================================================================================================================================
+v1.38	
+----.--.--
+=================================================================================================================================
+--Sistem hatalarinin mail atilmasi loglama ejb'sinden ayrildi
+--Rapor icin gerekli kontrollere vergi oraninin virgulden sonra 3 hane olabilir kontrolu eklendi
+
+
+Gecis Oncesi Hazirliklar:
+1. Tum joblar durdurulur ve silinir.
+2. Asagidaki DB Scriptleri calistirilir:
+
+DB Scripi yok
+
+3. Uygulama deploy edilir.
+4. SAP AS JAVA stop edilir. 
+5. Guncel sema dosyalari sunucuya tasinir.
+6. SAP AS JAVA start edilir.
+7. Tum joblar uygun sunucular uzerinde yeniden kurulur.
+
+Gecis sonrasi kontroller:
+--Sistem hatalarinin mail atildigi takip edilecek.
+--VErgi orani virgulden sonraki 5 hane girilen bir fatruanin hata aldigi test edilecek
+
+
+=================================================================================================================================
+v1.37		
+----.--.--
+=================================================================================================================================
+Goruntu uretilemezse notifikasyon yazilirken mail body de null olarak yazilmasi sorunu; gonderim sirasinda eger notfikasyonun mail body bilgisi null ise ozel parametlerri kontrol ederek replace yapacak hale getirildi
+Goruntu uretilemezse notifikasyon yazilirken mail subject de null olarak yazilmasi sorunu; gonderim sirasinda eger notfikasyonun mail subject bilgisi null ise ozel parametlerri kontrol ederek replace yapacak hale getirildi
+
+Gecis Oncesi Hazirliklar:
+1. Tum joblar durdurulur ve silinir.
+2. Asagidaki DB Scriptleri calistirilir:
+
+DB Scripi yok
+
+3. Uygulama deploy edilir.
+4. SAP AS JAVA stop edilir. 
+5. Guncel sema dosyalari sunucuya tasinir.
+6. SAP AS JAVA start edilir.
+7. Tum joblar uygun sunucular uzerinde yeniden kurulur.
+
+Gecis sonrasi kontroller:
+--test VKN'sinden icerisinde mail body olmayan fakat mail body param olan bir fatura gonderilerek notifikasyon tablosunda olusan mail body silinerek gonderim job'inin yeniden olustrup tabloya yazildigi kontrol edilir.
+--test VKN'sinden icerisinde mail subject olmayan fakat mail subject param olan bir fatura gonderilerek notifikasyon tablosunda olusan mail subject silinerek gonderim job'inin yeniden olustrup tabloya yazildigi kontrol edilir.
+
+
+=================================================================================================================================
+v1.36		
+----.--.--
+=================================================================================================================================
+--Tekli fatura gonderim servisinde mail body fatura icerisinde gonderilmemisse ve musteri ayarlarinda da default body yoksa hata dnmeyip notifikasyonu 510 statusunde kaydedecek.
+--Web servis cagri loglari handler'larin icerisine tasindi
+
+Gecis Oncesi Hazirliklar:
+1. Tum joblar durdurulur ve silinir.
+2. Asagidaki DB Scriptleri calistirilir:
+
+DB Scripi yok
+
+3. Uygulama deploy edilir.
+4. SAP AS JAVA stop edilir. 
+5. Guncel sema dosyalari sunucuya tasinir.
+6. SAP AS JAVA start edilir.
+7. Tum joblar uygun sunucular uzerinde yeniden kurulur.
+
+Gecis sonrasi kontroller:
+--test vkn'sinin sistemdeki mail body'si silinip icerisinde custom body olmayan fatura gonderilerek hata almadigi gorulmeli
+--web servis cagri loglarinda bir hata olup olmadigi kontrol edilecek.
+
+
+=================================================================================================================================
+v1.35		
+----.--.--
+=================================================================================================================================
+--Tekli fatura gonderim servisinde tranaction butunlugu kontrol edilerek yeniden tasarlandi
+
+Gecis Oncesi Hazirliklar:
+1. Tum joblar durdurulur ve silinir.
+2. Asagidaki DB Scriptleri calistirilir:
+
+DROP INDEX ARC_INV_DET_IDX1;
+DROP INDEX ARC_INV_DET_IDX2;
+
+CREATE INDEX ARC_INV_DET_IDX1 ON ARC_INV_DET(CIDENTIFIER, ISSUE_DATE, REPORT_STATUS, CBRANCH);
+CREATE INDEX ARC_INV_DET_IDX2 ON ARC_INV_DET(CIDENTIFIER, PROCESS_DATE, CBRANCH);
+CREATE INDEX ARC_INV_DET_IDX5 ON ARC_INV_DET(PROCESS_DATE);
+
+3. Uygulama deploy edilir.
+4. SAP AS JAVA stop edilir. 
+5. Guncel sema dosyalari sunucuya tasinir.
+6. SAP AS JAVA start edilir.
+7. Tum joblar uygun sunucular uzerinde yeniden kurulur.
+
+Gecis sonrasi kontroller:
+ws cagri logu atiliyor mu?
+GIB statusu kontrolu basarili mi?
+Branch bilgisi dogru okunuyor mu? / bos gonderildiginde 'default' olarak isleniyor mu?
+Size control duzgun calisiyor mu duzgun mesaj donuyor mu?
+hash control duzgun calisiyor mu duzgun mesaj donuyor mu?
+Zip icinde 1 de fazla dosya varsa duzgun hata donuyor mu?
+Anlik goruntu alma yetkisi olmayan biri goruntu isterse duzgun hata donuyor mu?
+Sema + Sematron kontrolleri duzgun calisiyor mu, duzgun hata donuyor mu?
+SenderIdentity control duzgun calisiyor mu?
+Raporlama donemi kontrolu duzgun calisiyor mu?
+Rapor icin gerekli alanlarin kontrolu duzgun calisiyor mu?
+Vkn_Tckn kontrolu duzgun calisiyor mu?
+Xslt kontrolu duzgun calisiyor mu?
+ARC_INVOICE, ARC_INV_DET, ARC_RAWINVOICE, ARC_NTF tablolari duzgun dolduruluyor mu?
+Anlik ciktilarda HTML, PDF alinabiliyor mu?
+Imza basarili ise sha256 hash donuyor mu?
+Imza hata alirsa yine de faturua tum tablolara kaydediliyor mu?
+Imzalamadan once faturanin signatoryParty bilgileri dogru yaziliyor mu?
+Imzadan sonra sema sematron duzgun mu?  
+Imza Gecerli mi? (hem efatura goruntuleyici hem de imzager ile kontrol etmek lazim.)
+
+
+=================================================================================================================================
+v1.34			
+----.--.--
+=================================================================================================================================
+-- Zarf acma JMS'inde son 2 dakika icerisinde gelmis olan zarflari skip etme ozelligi
+-- SendInvoice servisinde bugfix
+
+Gecis Oncesi Hazirliklar:
+1. Tum joblar durdurulur ve silinir.
+2. Asagidaki DB Scriptleri calistirilir:
+
+DB Scripi yok
+
+3. Uygulama deploy edilir.
+4. SAP AS JAVA stop edilir. 
+5. Guncel sema dosyalari sunucuya tasinir.
+6. SAP AS JAVA start edilir.
+7. Tum joblar uygun sunucular uzerinde yeniden kurulur.
+
+Gecis sonrasi kontroller:
+1. Sisteme test VKN'sinden zarf gonderilir ve 2 dakika icerisinde job alisir ise bir sonraki calismasinda zarfin acildigi kontrol edilir.
+2. Paralel 10 client'dan yuklu miktarda SendInvoice cagrisi yapilarak Basarili mesaj donen fakat sisteme kaydedilemeyen fatura olup olmadigi kontrol edilecek.
+
+
+=================================================================================================================================
+v1.33			
+----.--.--
+=================================================================================================================================
+-- UBL-TR 1.2.1 semasina gecis yapildi
+-- Sematron guncellendi
+-- e-Arsiv rapor semasinda yer alan faturalarin vergi orani en fazla 200 olabilir kontrolu rapor icin gerekli alan kontrolune eklendi
+-- 100 statusunde kalmis faturalarin Rapor UUID sine gore yeniden tetikleyen ejb method gelistirildi
+-- Eski web servisler kapatildi.
+
+Gecis Oncesi Hazirliklar:
+1. Tum joblar durdurulur ve silinir.
+2. Asagidaki DB Scriptleri calistirilir:
+
+DB Scripi yok
+
+3. Uygulama deploy edilir.
+4. SAP AS JAVA stop edilir. 
+5. Guncel sema dosyalari sunucuya tasinir.
+6. SAP AS JAVA start edilir.
+7. Tum joblar uygun sunucular uzerinde yeniden kurulur.
+
+Gecis sonrasi kontroller:
+1. Prod sistemden alinmis 2016 yilinda cesitli aylara ait faturalar test VKN'si(1111111111) ile Preprod sistemine gonderilerek sema ve sematron hatasi almadigi teyit edilir.
+2. Vergi orani 200 uzeri olan fatura kesilere hata aldigi, 200 ve alti fatura kesilerek basarili oldugu test edilir.
+3. PreProd Sisteminde 100 statusunde fatura olmadigi icin test VKN'sine(1111111111) ait bazi faturalar 100 statusune dusurulup ARC_INV_DET tablosundaki bazi alanlari null olarak update edilir. 
+ejb explorer'dan retrigegr islemi baslatilir. 
+Islem tamamlandiktan sonra fatura statulerinin 130 a geldigi ve ARC_INV_DET tablosunda null olarak update edilen alanlarinin tekrar dolduruldugu kontrol edilir.
+
+
+=================================================================================================================================
+v1.32			
+----.--.--
+=================================================================================================================================
+ -- Sistem e-Postalarini acip kapama parametresi ve musteri hatalarinin maillerden cikartilmasi eklendi.
+ -- Fatura imza, mail gonderim, rapor imza joblarinda (jms kullanan joblar) akilli agirlik dagilimi eklendi.
+ -- Kullanilmayan OP ve diger tablolar ile entity'ler kaldirildi
+ -- Imza job'inda 1000'den fazla fatura secilirse isleme almama sorunu giderildi
+ -- Zarfli gonderimlerde fatura UUID-ID-CUST_INV_ID mevcutsa kontrol yapilip spesifik hata donulecek.
+ -- SEND_REPORTS_TO_SI null ise false kabul edilecek.
+ -- Rapor olusturuken baslangic ve bitis tarihlerinin ayni ayda oldugunun kontrolu eklendi.
+ -- Ozel sureli raporlamada minimum belge sayisina bakmadan rapor olusturulacak.
+ -- Geriye dogru raporlama donemi parametresi ne kadarsa, kesilen fatura da en cok o kadar eski olabilecek, ws ile alirken kontrol edilip daha eski ise faturaya hata verilecek.
+ -- Rapor Parti baslangic tarihi, o parta eklenecek ilk fatura veya iptalin tarihi olacak, part bitis tarihi de parta eklenen son fatura veya iptalin tarihi olacak sekilde guncellendi.
+ -- sendInvoice servisinde ve ws loglarinda transactional butunluk kuruldu.
+ -- CAST tarama bulgularinin duzeltildi.
+ -- Daha once iptal edilen bir fatura yeniden iptal edilmeye calisildiginda fault code olarak 2 donulecek.
+ -- Admin sayfalarinda hataya duserse sap sayfasi yerine hata sayfasina yonlendirilecek.
+ -- Web servis cagri logu atilamazsa transaction hataya dusurulup fatura iceri alinmayacak sekilde guncellendi.
+
+Gecis Oncesi Hazirliklar:
+1. Tum joblar durdurulur ve silinir.
+2. Asagidaki DB Scriptleri calistirilir:
+
+
+--PROD
+
+--DROP TABLE EARCUSER.ARC_ADMIN_LOGGER
+--DROP TABLE EARCUSER.ARC_ADMIN_LOGGER_GEN
+--DROP TABLE EARCUSER.ARC_LOG_GENERATORS
+--DROP TABLE EARCUSER.ARC_PRD
+--DROP TABLE EARCUSER.ARC_SEND_TYPE
+--DROP TABLE EARCUSER.ARC_OP_CUSTOMER_ALIAS
+--DROP TABLE EARCUSER.ARC_OP_WEB_SRV_PARAMS
+
+-----------------------------------------
+--PREPROD
+
+DROP TABLE EARCUSER.ARC_PRD
+DROP TABLE EARCUSER.ARC_REC_FAILED
+DROP TABLE EARCUSER.ARC_REC_PROCESSING
+DROP TABLE EARCUSER.ARC_REC_SUCCEED
+DROP TABLE EARCUSER.ARC_SEND_TYPE
+DROP TABLE EARCUSER.ARC_OP_CUSTOMER_ALIAS
+DROP TABLE EARCUSER.ARC_OP_WEB_SRV_PARAMS
+
+3. Uygulama deploy edilir.
+4. SAP AS JAVA stop edilir. 
+5. SAP AS JAVA start edilir.
+6. Tum joblar uygun sunucular uzerinde yeniden kurulur.
+
+Gecis sonrasi kontroller:
+1. Sistem hata maillerinin ARC_SYSTEM_ERROR_MAIL Parametresi FALSE olarak setlenerek maillerin gonderilmedigi test edilecek.
+2. Fatura imza, mail gonderim, rapor imza joblari icin max islem kapaitesi ayarlanip sisteme test VKN'si ile (1111111111) fatura gonderilerek 3 surec de test edilecek.
+3. Kullanilmayan tablolarin silindigi kontrol edilecek.
+4. Imza job'i durdurulup sisteme 1000+ fatura gonderilip ARC_INV_SIGNER_JOB_LMT parametresi 1000 uzeri ayarlanip tum faturalarin islendigi test edilecek.
+5. Fatura ID Entegrator urettigi durum icin ayni CUST_INV_ID ile zarfli gonderim yapilacak ve hata mesajinda dogru ID yazdigi kontrol edilecek. Fatura ID gonderici urettigi durum icin Ayni ID ile gonderim yapilacak ve hata mesaji kontrol edilecek.
+6. Test VKN'si (11111111111) musteri ayarlarinda SEND_REPORTS_TO_SI null olarak setlenecek ve rapor uretiminde sistemin CLOUD gibi davrandigi kontrol edilecek. 
+7. Rapor olusturulup baslangic ve bitis tarihleri kontrol edilecek.
+8. Test VKN'si (1111111111) ile ozel sureli raporlma olusturulacak ve fatura sayisina bakilmadan tum faturalari raporladigi test edilecek.
+9. Geriye dogru raporlama parametresinden eskiye fatura kesilerek hata alindigi test edilecek.
+10.Test VKN'si(1111111111) ile belirli bir tarih araliginin raporu olusturulup ayni tarih araligina tekrar fatura gonderilecek. Tekrar rapor olusturuldugunda olusan yeni raporun baslangic tarihinin olusturulmus olan on partin bitis tarihi degil rapora eklnen ilk faturanin tarihi oldugu kontrol edilecek.
+11.Test VKN'sinden (1111111111) gonderilen bir fatura iptal edilip iptal islemi tekrar denenecek. FaultCode olarak "2" dondugu test edilecek.
+12.Admin sayfalarini hataya dusurmek icin datasource hataya dusurulecek ve admin sayfalarina giris yapilmaya calisilacak.(FITBulut sistemlerinde yapilamaz. Ofis ortaminda test edildi.)
+13.ARC_IC_WS_CLIENT_ACCESS tablosunda Ky olan IDX alanina 2 kez ayni kaydin atilmasi ve 2. denemede patlamasi icin ARC_CL_ID_GENERATORS tablosu sifirlanarak yeni fatura gonderimler yapilacak.Hata alindigi test edilecek.(FITBULUT'da yapilamaz Test ortaminda test edildi.)
+
+
+=================================================================================================================================
+v1.31			
+----.--.--
+=================================================================================================================================
+-- Dosya entegrasyonu we WS entegrasyonu zarflari farkli jolar ve jmsler tarafindan islenecek hale getirildi.
+-- Zarf acma islemi yapan iki JOB'da jms kuyrugunda olan zarf sayisini max ust limite tamamlayacak kadar JMS kuyruguna zarf basacak sekilde calistirildi.
+-- Dosya ntegrasyonu zarflarini acan job icin admin portalidne sekme eklendi.
+-- JMS te asili kalan tum islemlerin resetlenmesi icin notifier job'i genisletildi.
+-- Sistem hatalarinin mail atilabilecek
+-- XPrecheckServiceImpl de atilan loglardaki bug duzeltildi.
+-- Healtcheck performans iyilestirmesi.(Raporlanmamis fatura sayisi det tablosundan cekilecek sekilde)
+-- ARC_NTF tablosundaki mail body bilgisinin zipli olarak yazilip okunacak hale getirildi.
+-- Musteri basina rapor bekleme gununun ayarlanabilmesi eklendi.
+
+
+Gecis Oncesi Hazirliklar:
+1. Tum joblar durdurulur ve silinir.
+2. Asagidaki DB Scriptleri calistirilir:
+
+-----------------------------------------------------
+--DDL - 1
+-----------------------------------------------------
+DROP INDEX ARC_INVOICE_IDX2;
+DROP INDEX ARC_INVOICE_IDX3;
+
+ALTER TABLE ARC_CUSTOMER_SETTING ADD REPORT_WAITING_DAY NUMBER(3,0);
+
+
+3. Uygulama deploy edilir.
+4. SAP AS JAVA stop edilir. 
+5. SAP AS JAVA start edilir.
+6. Tum joblar uygun sunucular uzerinde yeniden kurulur.
+
+Gecis sonrasi kontroller:
+1. JMS kuyrugundaki ws zarf sayisi takip edilecek.
+2. JMS kuyrugundaki dosya entegrasyonu  zarf sayisi takip edilecek.
+3. Admin sayfalarinda Processor Monitoring sayfasindaki FileEnvExtracter sekmesi kontrol edilmeli.
+4. SignerNotifier job'i kurulup test edilmeli
+5. 1111111111 VKN2inin XSLT'si sistemden silinip ve fatura icinde xslt gondermeden test edilecek alinan hata mesaji kontrol edilecek
+6. HealthCheck job'i kurulacak ve sureler kontrol edilecek.
+7. ARC_NTF tablosuna mailBody'lerin zipli yazildigi kontrol edilecek.
+8. Musteri basina rapor bekleme gununun ayarlanabilmesi 1111111111 VKN'si ile test edilecek.
+
+
+=================================================================================================================================
+v1.30			
+----.--.--
+=================================================================================================================================
+--HealthCheck mail gonderim Job'i eklendi.
+--On-Premise'lerin userlist'i bulut earsiv WS API'den alabilmesi icin altyapi degisikligi
+--SendInvoice,SendEnvelope metotlarina ve EnvelopeExtracter jobina acilip kapanabilir detayli loglama yapisi eklendi
+--Eski iptal servisi, yenisi gibi calisacak sekilde degistirildi
+--Reconciliation API metodu hata donecek sekilde degistirildi
+--ReportGeneration jabi guncel donem raporlarini olusturduktan sonra gecmis aylarin da raporunu olusturacak sekilde guncellendi. (Kac ay geriye gidecegi parametrik)
+--GetStatus Metodunda eger fatura sistemde yoksa hata mesaji "Invoice could not be found!" olacak sekilde guncellendi.
+--Internal kullanici kayit servisinde loglama eklendi, uzun descriptionlar kontrol edilerek yazilacak sekilde guncellendi.
+--ARC_INVOICE tablosuna FROM_ARCHIVE alani eklendi.
+--ARC_INV_DET tablosuna IS_ARCHIVED alani eklendi.
+--ARC_REPORT tablosuna FROM_ARCHIVE alani eklendi.
+--ARC_RAWREPORT tablosuna FROM_ARCHIVE alani eklendi.
+--ARC_RAWINVOICE tablosuna FROM_ARCHIVE alani eklendi.
+
+Gecis Oncesi Hazirliklar:
+1. Tum joblar durdurulur ve silinir.
+2. Asagidaki DB Scriptleri calistirilir:
+
+-----------------------------------------------------
+--DDL - 1
+-----------------------------------------------------
+ALTER TABLE ARC_INVOICE ADD "FROM_ARCHIVE" NUMBER(1 , 0);
+ALTER TABLE ARC_INV_DET ADD "IS_ARCHIVED" NUMBER(1 , 0);
+ALTER TABLE ARC_REPORT ADD "FROM_ARCHIVE" NUMBER(1 , 0);
+ALTER TABLE ARC_RAWREPORT ADD "FROM_ARCHIVE" NUMBER(1 , 0);
+ALTER TABLE ARC_RAWINVOICE ADD "FROM_ARCHIVE" NUMBER(1 , 0);
+
+-----------------------------------------------------
+--DML - 1
+-----------------------------------------------------
+UPDATE ARC_INVOICE SET FROM_ARCHIVE = 0;
+UPDATE ARC_INV_DET SET IS_ARCHIVED = 0;
+UPDATE ARC_REPORT SET FROM_ARCHIVE = 0;
+UPDATE ARC_RAWREPORT SET FROM_ARCHIVE = 0;
+UPDATE ARC_RAWINVOICE SET FROM_ARCHIVE = 0; 
+
+
+3. Uygulama deploy edilir.
+4. SAP AS JAVA stop edilir. 
+5. SAP AS JAVA start edilir.
+6. Tum joblar uygun sunucular uzerinde yeniden kurulur.
+
+Gecis sonrasi kontroller:
+1. HealthCheck mail gonderim Job'i kurulup mail gonderimi test edilecek.
+2. Detayli loglama acilarak test edilecek.
+3. Eski iptal servisi cagirilarak test edilecek.
+4. Reconciliation metodundan dogr bir request ile hata alinacak.
+5. ReportGeneration jabi gecmis donem faturalarini olusturup olusturmadigi test edilecek.
+6. Sistemde olmayan bir fatura ID ve UUID ile getStatus metodu cagirilip donen hata mesaji kontrol edilecek.
+7. GetUserList metodu cagirilarak test edilecek.
+
+
+=================================================================================================================================
+v1.29			
+----.--.--
+=================================================================================================================================
+
+1.HealthCheck ekrani admin paneline eklendi.
+2.GIB in asagidaki duyurusuna istinaden efatura mukellef listelerinin xml yerine zipli formda ve history datalari ile birlikte alinmasi.
+
+"12.07.2016
+Entegratorler ve ozel entegratorler tarafindan kullanilmakta olan kullanici listelerinin (userlist) yapisi degistirilmis ve zip formatina cevrilmistir. 26.09.2016 tarihinden sonra eski kullanici listesinin (zip formatsiz) paylasimina son verilecektir. Bu nedenle entegrator ve ozel entegrator firmalarin yazilimlarinda gerekli guncelleme islemlerini soz konusu tarihe kadar yapmalari onem arz etmektedir."
+
+
+
+Gecis Oncesi Hazirliklar:
+1. Tum joblar durdurulur ve silinir.
+2. Asagidaki DB Scriptleri calistirilir:
+
+--GIB UserList RAW
+CREATE TABLE ARC_IC_GIB_USERLIST_RAW(
+	TYPE                    VARCHAR2(8) PRIMARY KEY,
+	BINARY_DATA				BLOB,
+	INSERT_DATETIME			DATE,
+	SYS_VERSION				NUMBER(10),
+	SYS_LAST_UPDATE			DATE
+);
+
+-- ARC_IC_GIB_USERLIST_PK_H tablosunun id generatoru
+CREATE TABLE "ARC_IC_GIB_USERLIST_PK_H_GEN" (
+		"NAME" VARCHAR2(255) PRIMARY KEY,
+		"VALUE" NUMBER(19 , 0) NOT NULL
+);
+	
+--GIB UserList History PK
+CREATE TABLE ARC_IC_GIB_USERLIST_PK_H(
+	IDX					NUMBER(30) PRIMARY KEY,
+	ID					VARCHAR2(11),
+	IDENTIFIER			VARCHAR2(200),
+	CREATION_TIME		DATE,
+	DELETION_TIME		DATE,
+	SYS_VERSION			NUMBER(10),
+	SYS_LAST_UPDATE	  	DATE
+);
+	
+
+-- ARC_IC_GIB_USERLIST_GB_H tablosunun id generatoru
+CREATE TABLE "ARC_IC_GIB_USERLIST_GB_H_GEN" (
+		"NAME" VARCHAR2(255) PRIMARY KEY,
+		"VALUE" NUMBER(19 , 0) NOT NULL
+);
+	
+	
+	--GIB UserList History GB
+CREATE TABLE ARC_IC_GIB_USERLIST_GB_H(
+	IDX					NUMBER(30) PRIMARY KEY,
+	ID					VARCHAR2(11),
+	IDENTIFIER			VARCHAR2(200),
+	CREATION_TIME		DATE,
+	DELETION_TIME		DATE,
+	SYS_VERSION			NUMBER(10),
+	SYS_LAST_UPDATE	  	DATE
+);
+	
+	
+-- GIB UserList GB
+CREATE TABLE "ARC_IC_GIB_USERLIST_GB" (
+		"ALIAS_NAME" NVARCHAR2(250) NOT NULL,
+		"IDENTIFIER" NVARCHAR2(11) NOT NULL,
+		"USER_TYPE" NVARCHAR2(255),
+		"TITLE" NVARCHAR2(255),
+		"SYS_LAST_UPDATE" DATE,
+		"FIRST_CREATION" DATE,
+		"REGISTER_TIME" DATE,
+		"SYS_VERSION" NUMBER(10 , 0) NOT NULL
+);
+	
+-- GIB UserList GB'nin primary key i
+ALTER TABLE "ARC_IC_GIB_USERLIST_GB" ADD CONSTRAINT "PK_ARC_IC_GIB_USERLIST_GB_548" PRIMARY KEY ("ALIAS_NAME", "IDENTIFIER");
+
+-- GIB UserList PK eski tablo rename
+ALTER TABLE ARC_GIB_PK_USERS RENAME TO ARC_IC_GIB_USERLIST_PK;
+
+3. Uygulama deploy edilir.
+4. SAP AS JAVA stop edilir. 
+5. SAP AS JAVA start edilir.
+6. Tum joblar uygun sunucular uzerinde yeniden kurulur.
+
+Gecis sonrasi kontroller:
+1- GIB kullanici listesi jobinin calistigi gozlenmeli, calisma suresi ve performansi beklendigi gibi olmali.
+2- GIB kullanici listesini verdigimiz servisin calistigi 5 ws cagrisi yapilarak test edilmeli. Daha oncekinden farkli bir data verilmemeli. 
+Ws response suresi onceki ile ayni olmali.
+3- Admin sayfasindaki HealthCheck ekrani kontrol edilecek ve ekrandaki sorgularin ne kadar surdugu gozlenecek.
+
+ARC_GENERAL_PARAM tablosundaki ARC_GIB_USER_LIST_ADDRESS Parametresi "https://einvweb2.fitbulut.com/ICGIBUserList/GIBUserListHandler/FITOEGIBUserListProxy.gib" seklinde guncellenir.
+
+
+=================================================================================================================================
+v1.28			
+----.--.--
+=================================================================================================================================
+1.Kullanilmayan tablo ve kolonlar koddan ve DB den cikarildi.
+2.On premise sistemler icin core admin portaline notifikasyon takip ekrani eklendi.
+3.Admin logger sayfalarinda, acilista default olarak tarih gelmedigi icin sorgular cok uzun suruyor
+4.Admin portalindeki loglarin siralanmasi insertdatetime a gore yapildi.
+5.Admin login ekranindaki sifresiz giris bugi duzeltildi.
+6.WS loglarinda musteriye donulen tum hatalarin detayli sekilde loglanmasi saglandi.
+7.Sistem disina sistem hata detayi verilen yerler duzeltildi(or. InvIdGeneration servisinde hata alindiginda class, kod, DB hatasi goruluyor.)
+8.Iptal edilen bir faturanin, iptal isleminden sonra retrigger servisi ile mail talep edildiginde iptal pdf i yerine normal pdf inin gonderilmesi hatasi
+9.Fatura toplam boyut max limit kontolu eklendi. Faturalar icin zipli 150KB - acik XML 300KB, zarflar icin zipli 6MB - acik XML 12MB default degerleri secildi.
+10.SMTP ve SFTP statuleri DB'de preprod-prod'da guncellendi.
+11.Mail ve SFTP joblari, goruntunun olusturulamadigini gorurse tekrar denesin, basarili olursa islemi yapsin seklinde guncelendi.
+12.SFTP jobinda detayli loglama ve loglara sube bilgisi eklendi.
+13.Rapor Jobinin 12 saati asmamasi icin herbir calismasi icin VKN basina max part kontrolu eklendi.
+14.FTP jobinda uzun suren arc_ntf sorgusu yerine ftp kullannalar ARC_CUSTOMER_SETTING ten cekilmeye baslandi.
+15.Fatura Iptal tablosuna inserDateTime alani eklendi.
+16.OKC icin gereken alanlarin, ws cagrisi sirasinda rapor alanlari kontrolune eklendi. ZNO gondermeyen musterilerde rapor olusturma hatasi.
+17.Java DB Cleaner job'i ARC_NTF ve ARC_DOC_VIEW tablolarini parametrede belirlenen gunden eski kayitlari silecek sekilde guncellendi.
+18.x duzenlenme tarihinden eski fatura-iptal gonderimleri icin parametrik kontrolun WS metodlarina eklendi. Raporlama donemi disina fatura/iptal gonderilmesi boylece engellenmis oldu.
+19.Rapor jobinda sadece iptallerin de raporlanabilmesi ozelligi eklendi.
+20.ARC_RAWINVOICE tablosuna issuedate alani eklendi.
+21.ARC_INVOICE tablosuna zarfla gelen faturalar icin ENV_UUID bilgisi eklendi.
+22.Iptal servisi cagrildiginda, iptal tablosuna kayit atilirken detay tablosundaki iptal flagi setlenememe bug fix i yapildi.
+
+
+Gecis Oncesi Hazirliklar:
+1. Tum joblar durdurulur ve silinir.
+2. Asagidaki DB Scriptleri calistirilir:
+---------------------------1-----------------------------
+--TABLOLARA YENI INDEX EKLEMELERI
+---------------------------------------------------------
+CREATE INDEX
+ARC_IC_LOGS_IDX3
+ON ARC_IC_LOGS(INSERT_DATETIME, IDX);
+
+CREATE INDEX
+ARC_IC_WS_CLIENT_ACCESS_IDX1
+ON ARC_IC_WS_CLIENT_ACCESS(SYS_LAST_UPDATE, METHOD, CIDENTIFIER);
+
+CREATE INDEX
+ARC_IC_WS_CLIENT_ACCESS_IDX2
+ON ARC_IC_WS_CLIENT_ACCESS(SYS_LAST_UPDATE, IDX);
+
+CREATE INDEX
+ARC_DOC_VIEW_IDX2
+ON ARC_DOC_VIEW(SYS_LAST_UPDATE, IDX);
+
+CREATE INDEX
+ARC_NTF_IDX5
+ON ARC_NTF(ISSUE_DATE, NTF_UUID);
+
+CREATE INDEX 
+ARC_IC_LOGS_IDX3 
+ON ARC_IC_LOGS(TYPE, INSERT_DATETIME);
+
+
+----------------------------------------------------------
+--ARC_RAWINVOICE tablosuna eklenen issuedate alaninin hizli doldurulmasi icin
+----------------------------------------------------------
+CREATE INDEX ARC_RAWINVOICE_IDX1 ON ARC_RAWINVOICE(ISSUE_DATE, RAW_UUID);
+
+---------------------------2-----------------------------
+-- FATURA IPTAL TABLOSUNA insertdatetime alani eklendi
+---------------------------------------------------------
+ALTER TABLE ARC_INVOICE_CANCEL_INFO ADD "INSERT_DATETIME" DATE;
+
+---------------------------3-----------------------------
+Gunluk eski loglari tasima-silme job'inin ihtiyaci oldugu icin FIT Bulut test-canli DB'de asagidaki gibi bir index daha
+---------------------------------------------------------
+CREATE INDEX
+ARC_IC_LOGS_IDX4
+ON ARC_IC_LOGS(INSERT_DATETIME, IDX)
+
+----------------------------4----------------------------
+ARC_INVOICE tablosuna env UUID eklendi
+ARC_RAWINVOICE tablosuna issue_date alani eklendi
+---------------------------------------------------------
+ALTER TABLE ARC_INVOICE ADD "ENVELOPE_UUID" NVARCHAR2(36);
+ALTER TABLE ARC_RAWINVOICE ADD "ISSUE_DATE" DATE;
+
+
+3. Uygulama deploy edilir.
+4. SAP AS JAVA stop edilir.
+5. ARC_GENERAL_PARAM tablosunda PARAMKEY = 'ARC_WS_CL_LOGGER' olan kayitta, PARAMVALUE = 'YES' ise 'TRUE'  olarak, 'NO' ise 'FALSE' olarak guncellenmeli.
+6. ARC_GENERAL_PARAM tablosunda PARAMKEY = 'ARC_WS_USER_CONTROL' olan kayitta, PARAMVALUE = 'YES' ise 'TRUE'  olarak, 'NO' ise 'FALSE' olarak guncellenmeli 
+7. Asagidaki DB scriptleri calistirilir:
+
+----------------------------------------------------------
+--ARC_RAWINVOICE tablosuna eklenen issuedate alaninin doldurulmasi icin
+----------------------------------------------------------
+UPDATE ARC_RAWINVOICE a
+SET a.ISSUE_DATE = (SELECT b.ISSUE_DATE FROM EARCUSER.ARC_INVOICE b WHERE a.RAW_UUID = b.UUID)
+WHERE a.RAW_UUID IN(
+  SELECT RAW_UUID FROM EARCUSER.ARC_RAWINVOICE WHERE ISSUE_DATE IS NULL AND ROWNUM < 1000000
+);
+
+
+--------------------------------------------------------
+-- ARTIK KULLANILMAYAN ALAN VE TABLOLARIN SILINMESI
+---------------------------------------------------------
+--ALTER TABLE ARC_INV_DET DROP COLUMN TAX_EXCLUSIVE_AMOUNT;
+--ALTER TABLE ARC_INV_DET DROP COLUMN TCKN;
+--ALTER TABLE ARC_INV_DET DROP COLUMN VKN;
+--ALTER TABLE ARC_INV_DET DROP COLUMN ADI_SOYADI;
+--ALTER TABLE ARC_INV_DET DROP COLUMN UNVAN;
+--ALTER TABLE ARC_INVOICE DROP COLUMN CURRENCY_CODE;
+--ALTER TABLE ARC_INVOICE DROP COLUMN PAYABLE_AMOUNT;
+
+--DROP TABLE ARC_SYSTEM_LOGGER;
+--DROP TABLE ARC_NOTIFICATION;
+
+5. SAP AS JAVA start edilir.
+6. Tum joblar uygun sunucular uzerinde yeniden kurulur.
+
+
+=================================================================================================================================
+v1.27			
+2016.06.20
+=================================================================================================================================
+1.  NULL zarf UUID ile insert yapmaya calistiginda alinan hata icin bug fix.
+
+Gecis Oncesi Hazirliklar:
+1. Tum joblar durdurulur ve silinir.
+2. Uygulama deploy edilir.
+3. SAP AS JAVA stop & start yapilir.
+4. Tum joblar uygun sunucular uzerinde yeniden kurulur.
+
+
+=================================================================================================================================
+v1.26			
+2016.06.20
+=================================================================================================================================
+1.  ARC_SYSTEM_LOGGER TABLOSU ve java tarafindaki entitysi olan SystemLogger class i kullanimdan kaldirildi. Bu tabloya yapilan tum loglamalar kaldirildi.
+2.  Ilk baslarda odeme kaydedici cihaz icin olusturulan ARC_PRD tablosu ve PaymentRecorderDevice class i kaldirildi.
+3.  ARC_INV_DET tablosuna IS_READ ve FROM_ARCHIVE alanlari eklendi
+4.  Yeni OKC Fis Bilgisini raporlayabilme ozelligi eklendi.
+5.  Rapor icin gerekli alanlarin(Rapor semasinda kontrolu yapilan fatura bilgileri) kontrolu uygulama icerisinden fatura alim methodlarinda(sendInvoice, sendEnvelope) kontrol edildi.
+6.  5. maddede yapilan kontroller parametreye baglandi ve acilip kapatilabilir hale getirildi.
+
+
+
+
+Gecis Oncesi Hazirliklar:
+1. Tum joblar durdurulur ve silinir.
+2. SAP AS JAVA stop edilir.
+3. ORACLE DB icin asagidaki scriptler calistirilir:
+-----------------------------------------------------
+--DDL - 1
+-----------------------------------------------------
+ALTER TABLE ARC_INV_DET ADD "IS_READ" NUMBER(1 , 0);
+ALTER TABLE ARC_INV_DET ADD "FROM_ARCHIVE" NUMBER(1 , 0);
+
+
+-----------------------------------------------------
+--DML - 1
+-----------------------------------------------------
+UPDATE ARC_INV_DET SET IS_READ = 0;
+COMMIT;
+UPDATE ARC_INV_DET SET FROM_ARCHIVE = 0;
+COMMIT;
+
+
+4. SAP AS JAVA acilir.
+5. Uygulama deploy edilir.
+6. SAP AS JAVA stop & start yapilir.
+7. Tum joblar uygun sunucular uzerinde yeniden kurulur.
+
+
+=================================================================================================================================
+v1.25			
+2016.04.19
+=================================================================================================================================
+1.  ARC_INV_DET tablosuna ek alanlar eklendi. 
+2.  Fatura iptal servisine iptal edilen faturanin iptal tarihinin, fatura tarihinden eski olamamasi kontrolu eklendi.
+3.  Mail gonderiminde attachmentsiz gonderimin yapilabilmesi saglandi.
+4.  Zarf gonderim servisinin yeniden duzenlenmesi - transactional butunluk ve fatura var mi kontrolleri.
+5.  Job ve WS loglarinin yeni tabloya standart sekilde yazilmasi.
+6.  Admin Portali eklendi.
+7.  Raporlarda coklu KDV lerde matrah bilgisi guncellendi.
+8.  Portal icin detay ve vergiler tablolarina ek alan-index eklemeleri.
+9.  SAP konsol loglamalarin tamamini kapatma.
+10. Rapor olusturma performans iyilestirmeleri.
+11. Eski loglama islemlerini kaldirildi.
+12. Zarf acma(xsltController) jobinin ismi 'EnvelopeExtracterJob' olarak degisti.
+13. Iptal mail gonderimlerinde subject in basina IPTAL -  yazilmasi saglandi.
+14. Zarf acma job ina, dosya entegrasyonu ve direk entegrasyonlar icin ayri ayri islem sayisi parametresi eklendi.
+15. Zarf acma sirasi gelis zamanina gore 'once gelen, once acilir (FIFO)' olarak guncellendi.
+16. Zarf gonderim servisinde transaction guncellemesi yapilarak daha kisa sure DB baglantisi kurulmasi saglandi. Zarfin kaydedildigini sorgu ile dogrulama eklendi.
+17. Mail alici adres bilgisi gecerli bir adres degilse o mail gonderilmeyecek.(Turkce karakter iceren adresler, bos adresler, validasyon gecemeyen adresler vs...)
+
+
+Gecis Oncesi Hazirliklar:
+1. Tum joblar durdurulur ve silinir.
+2. SAP AS JAVA stop edilir.
+3. ORACLE DB icin asagidaki scriptler calistirilir:
+
+-- ########## ADMIN LOGGER TABLOLARI ##########
+--CREATE TABLE "ARC_IC_LOGS_GEN" (
+		"NAME" NVARCHAR2(255) NOT NULL,
+		"VALUE" NUMBER(19 , 0) NOT NULL
+	);
+--CREATE TABLE "ARC_IC_LOGS" (
+		"IDX" NUMBER(19 , 0) NOT NULL,
+		"CIDENTIFIER" NVARCHAR2(255),
+		"INSERT_DATETIME" DATE,
+		"UUID" NVARCHAR2(255),
+		"TYPE" NUMBER(10 , 0) NOT NULL,
+		"LOG" NVARCHAR2(2000)
+	);
+	
+--ALTER TABLE "ARC_IC_LOGS" ADD CONSTRAINT "PK_ARC_IC_LOGS_873" PRIMARY KEY ("IDX");
+--ALTER TABLE "ARC_IC_LOGS_GEN" ADD CONSTRAINT "PK_ARC_IC_LOGS_GEN_602" PRIMARY KEY ("NAME");
+
+ --########## ARC_INV_DET TABLOSUNA EKLENEN ALANLAR ##########
+--ALTER TABLE ARC_INV_DET ADD "CIDENTIFIER" NVARCHAR2(11);
+--ALTER TABLE ARC_INV_DET ADD "CBRANCH" NVARCHAR2(11);
+--ALTER TABLE ARC_INV_DET ADD "ISSUE_DATE" DATE;
+--ALTER TABLE ARC_INV_DET ADD "PROCESS_DATE" DATE;
+--ALTER TABLE ARC_INV_DET ADD "INVOICE_ID" NVARCHAR2(16);
+--ALTER TABLE ARC_INV_DET ADD "CUST_INV_ID" NVARCHAR2(36);
+--ALTER TABLE ARC_INV_DET ADD "IS_CANCELLED" NUMBER(1 , 0);
+--ALTER TABLE ARC_INV_DET ADD "REPORT_STATUS" NUMBER(1 , 0);
+--ALTER TABLE ARC_INV_DET ADD "OKC_SERINO" NVARCHAR2(36);
+--ALTER TABLE ARC_INV_DET ADD "OKC_ZNO" NVARCHAR2(36);
+--ALTER TABLE ARC_INV_DET ADD "OKC_FISNO" NVARCHAR2(36);
+--ALTER TABLE ARC_INV_DET ADD "OKC_FISTIP" NVARCHAR2(36);
+--ALTER TABLE ARC_INV_DET ADD "OKC_FISTARIH" DATE;
+--ALTER TABLE ARC_INV_DET ADD "OKC_FISZAMAN" DATE;
+--ALTER TABLE ARC_INV_DET ADD "RECEIVER_ID" NVARCHAR2(11);
+--ALTER TABLE ARC_INV_DET ADD "RECEIVER_TITLE" NVARCHAR2(255);
+--ALTER TABLE ARC_CUSTOMER_SETTING ADD APPROVE_STATUS NUMBER(2);
+--ALTER TABLE ARC_CUST_SMTP_SETTING ADD APPROVE_STATUS NUMBER(2);
+
+-- ########## VERGI VE TEVKIFAT TABLOLARINA EKLENEN ALANLAR ##########
+--ALTER TABLE ARC_TAX_ST ADD "TAXABLE_AMOUNT" NUMBER(18 , 2);
+--ALTER TABLE ARC_WH ADD "TAXABLE_AMOUNT" NUMBER(18 , 2);
+
+
+--------------------------------------------------------------------
+--BURADAN SONRASI ING DEKI EKSIKLER ICIN--
+--------------------------------------------------------------------
+
+--########## YENI NOTIFIKASYON TABLOLARI -  ING EXTRA SCRIPT##########
+CREATE TABLE "ARC_DOC_VIEW_GENERATORS" (
+		"NAME" NVARCHAR2(255) NOT NULL,
+		"VALUE" NUMBER(19 , 0) NOT NULL
+	);
+CREATE TABLE "ARC_DOC_VIEW" (
+		"IDX" NUMBER(19 , 0) NOT NULL,
+		"CONTENT" BLOB,
+		"SYS_LAST_UPDATE" TIMESTAMP(6),
+		"DOC_CONTENT_TYPE" NVARCHAR2(25),
+		"INV_UUID" NVARCHAR2(36),
+		"SYS_VERSION" NUMBER(10 , 0) NOT NULL
+	);
+ALTER TABLE "ARC_DOC_VIEW_GENERATORS" ADD CONSTRAINT "PK_ARC_DOC_VIEW_GENERATORS_656" PRIMARY KEY ("NAME");
+ALTER TABLE "ARC_DOC_VIEW" ADD CONSTRAINT "PK_ARC_DOC_VIEW_990" PRIMARY KEY ("IDX");
+	
+CREATE TABLE "ARC_NTF" (
+		"NTF_UUID" NVARCHAR2(36) NOT NULL,
+		"MAIL_BODY_HTML" CLOB NULL,
+		"TRANSACTION_ID" NVARCHAR2(256),
+		"MAIL_TO" NVARCHAR2(512),
+		"RETRY_COUNT" NUMBER(10 , 0) NOT NULL,
+		"SUBJECT" NVARCHAR2(256),
+		"SYS_LAST_UPDATE" TIMESTAMP(6),
+		"INV_ID" NVARCHAR2(16),
+		"STATUS_DATE" DATE,
+		"NTF_TYPE" NVARCHAR2(255),
+		"SYS_VERSION" NUMBER(10 , 0) NOT NULL,
+		"MAIL_FROM" NVARCHAR2(128),
+		"OUTPUT_FILE_NAME" NVARCHAR2(255),
+		"INV_UUID" NVARCHAR2(36) NOT NULL,
+		"DOC_CONTENT_TYPE" NVARCHAR2(25),
+		"ISSUE_DATE" DATE,
+		"PROCESS_DATE" DATE,
+		"STATUS_DESC" NVARCHAR2(256),
+		"CIDENTIFIER" NVARCHAR2(11),
+		"CBRANCH" NVARCHAR2(11),
+		"STATUS_ID" NUMBER(5 , 0)
+	);
+	
+ALTER TABLE "ARC_NTF" ADD CONSTRAINT "PK_ARC_NTF_87" PRIMARY KEY ("NTF_UUID");
+
+ --########## NOTIFIKASYON INDEXLER -  ING EXTRA SCRIPT########## 
+CREATE INDEX ARC_NTF_IDX1 ON ARC_NTF(STATUS_ID, NTF_TYPE, NTF_UUID);
+CREATE INDEX ARC_NTF_IDX2 ON ARC_NTF(CIDENTIFIER, CBRANCH, ISSUE_DATE, STATUS_ID); -*****
+CREATE INDEX ARC_NTF_IDX3 ON ARC_NTF(NTF_TYPE, INV_ID, INV_UUID, MAIL_TO);
+CREATE INDEX ARC_DOC_VIEW_IDX1 ON ARC_DOC_VIEW (DOC_CONTENT_TYPE,INV_UUID);
+
+ --########## FATURA ve FATURA IPTAL TABLOLARINA EKLENEN ALANLAR -  ING EXTRA SCRIPT##########
+ALTER TABLE ARC_INVOICE ADD "IS_READ" NUMBER(5 , 0);
+ALTER TABLE ARC_INVOICE ADD "IS_ARCHIVED" NUMBER(5 , 0);
+ALTER TABLE ARC_INVOICE_CANCEL_INFO ADD "IS_READ" NUMBER(5 , 0);
+ALTER TABLE ARC_INVOICE_CANCEL_INFO ADD "IS_ARCHIVED" NUMBER(5 , 0);
+
+
+--########### OP EK ALANLARI -  ING EXTRA SCRIPT###########
+ALTER TABLE ARC_CUSTOMER_SETTING ADD APPROVE_STATUS NUMBER(2);
+ALTER TABLE ARC_CUST_SMTP_SETTING ADD APPROVE_STATUS NUMBER(2);
+
+COMMIT;
+
+
+
+
+
+-----------------------------------------------------------------------------------------------
+--1.
+-----------------------------------------------------------------------------------------------
+
+UPDATE EARCUSER.ARC_INV_DET det
+SET (CIDENTIFIER, CBRANCH, ISSUE_DATE, PROCESS_DATE, INVOICE_ID, CUST_INV_ID) = 
+(
+  SELECT inv.CIDENTIFIER, inv.CBRANCH, inv.ISSUE_DATE, inv.PROCESS_DATE, inv.INVOICE_ID, inv.CUST_INV_ID
+  FROM EARCUSER.ARC_INVOICE inv
+  WHERE det.UUID = inv.UUID 
+)
+WHERE CIDENTIFIER IS NULL;
+COMMIT;
+  
+SELECT count(1)
+FROM EARCUSER.ARC_INV_DET
+WHERE CIDENTIFIER IS NULL;
+
+-----------------------------------------------------------------------------------------------
+--2.
+-----------------------------------------------------------------------------------------------
+
+UPDATE EARCUSER.ARC_INV_DET det 
+SET REPORT_STATUS = 2
+WHERE REPORT_STATUS IS NULL 
+AND det.UUID IN
+(
+	SELECT UUID
+	FROM EARCUSER.ARC_INVOICE 
+	WHERE (STATUS_ID=150 OR STATUS_ID=999)
+)
+AND ROWNUM < 3000000;
+COMMIT;
+
+UPDATE EARCUSER.ARC_INV_DET det 
+SET REPORT_STATUS = 1
+WHERE REPORT_STATUS IS NULL 
+AND det.UUID IN
+(
+	SELECT UUID
+	FROM EARCUSER.ARC_INVOICE 
+	WHERE (STATUS_ID=130 OR STATUS_ID=998)
+)
+AND ROWNUM < 3000000;
+COMMIT;
+
+UPDATE EARCUSER.ARC_INV_DET det 
+SET REPORT_STATUS = 0
+WHERE REPORT_STATUS IS NULL 
+AND det.UUID IN
+(
+	SELECT UUID
+	FROM EARCUSER.ARC_INVOICE 
+	WHERE (STATUS_ID < 130)
+)
+AND ROWNUM < 3000000;
+COMMIT;
+
+SELECT count(1)
+FROM EARCUSER.ARC_INV_DET
+WHERE REPORT_STATUS IS NULL;
+
+
+	  
+
+-----------------------------------------------------------------------------------------------
+--3.
+-----------------------------------------------------------------------------------------------
+
+UPDATE EARCUSER.ARC_INV_DET det SET IS_CANCELLED = 0
+WHERE det.IS_CANCELLED IS NULL;
+COMMIT;
+
+UPDATE EARCUSER.ARC_INV_DET det SET IS_CANCELLED = 1
+WHERE EXISTS (SELECT 1 FROM EARCUSER.ARC_INVOICE_CANCEL_INFO cif WHERE cif.INVOICE_ID = det.INVOICE_ID AND det.CIDENTIFIER = CIF.CIDENTIFIER);
+COMMIT;
+
+SELECT COUNT(1) FROM ARC_INVOICE_CANCEL_INFO;
+SELECT COUNT(1) FROM ARC_INV_DET WHERE IS_CANCELLED = 1;
+
+-----------------------------------------------------------------------------------------------
+--4.
+-----------------------------------------------------------------------------------------------
+DECLARE
+  vkn_tckn  NVARCHAR2(255 CHAR);
+  unvan     NVARCHAR2(255 CHAR);
+  row_count NUMBER;
+BEGIN
+  LOOP
+    FOR item IN (
+			SELECT uuid
+			FROM EARCUSER.ARC_INV_DET
+			WHERE RECEIVER_ID IS NULL
+			AND ROWNUM <= 100000
+		)
+    LOOP
+      SELECT (VKN || TCKN) INTO vkn_tckn
+      FROM EARCUSER.ARC_INV_DET 
+      WHERE UUID = item.uuid;
+      
+      SELECT (UNVAN || ADI_SOYADI) INTO unvan
+      FROM EARCUSER.ARC_INV_DET 
+      WHERE UUID = item.uuid;
+      
+      UPDATE EARCUSER.ARC_INV_DET
+      SET RECEIVER_ID = vkn_tckn, RECEIVER_TITLE = unvan
+      WHERE UUID = item.uuid;
+      
+    END LOOP;
+    COMMIT;
+		
+    SELECT COUNT(1) INTO row_count
+		FROM EARCUSER.ARC_INV_DET
+    WHERE RECEIVER_ID IS NULL
+    AND ROWNUM <= 2;
+      
+    EXIT WHEN row_count=0;
+ END LOOP; 
+END;
+
+SELECT COUNT(1) 
+		FROM EARCUSER.ARC_INV_DET
+    WHERE RECEIVER_ID IS NULL;
+	
+	
+-----------------------------------------------------------------------------------------------
+--5. SADECE INGDE CALISTIRILACAK
+-----------------------------------------------------------------------------------------------
+
+UPDATE ARC_INVOICE SET IS_READ = 0;
+UPDATE ARC_INVOICE SET IS_ARCHIVED = 0;
+COMMIT;
+
+-----------------------------------------------------------------------------------------------
+--6. SADECE INGDE CALISTIRILACAK
+-----------------------------------------------------------------------------------------------
+
+UPDATE ARC_INVOICE_CANCEL_INFO SET IS_READ = 0;
+UPDATE ARC_INVOICE_CANCEL_INFO SET IS_ARCHIVED = 0;
+COMMIT;
+
+
+-----------------------------------------------------------------------------------------------
+--7. 
+-----------------------------------------------------------------------------------------------
+
+UPDATE EARCUSER.ARC_INV_DET det
+SET (LMT_PYBL_AMNT, LMT_PYBL_AMNT_CURR) = 
+(
+  SELECT inv.PAYABLE_AMOUNT, inv.CURRENCY_CODE
+  FROM EARCUSER.ARC_INVOICE inv
+  WHERE det.UUID = inv.UUID 
+)
+WHERE det.LMT_PYBL_AMNT IS NULL;
+COMMIT;
+
+UPDATE ARC_INV_DET det SET det.LMT_TAX_EXCL_AMNT = det.TAX_EXCLUSIVE_AMOUNT WHERE 
+det.LMT_TAX_EXCL_AMNT IS NULL;
+COMMIT;
+
+
+4. SAP AS JAVA acilir.
+5. Uygulama deploy edilir.
+6. SAP AS JAVA stop & start yapilir.
+7. Tum joblar uygun sunucular uzerinde yeniden kurulur.
+
+
+
+
+=================================================================================================================================
+v1.2.4			
+2016.04.19
+=================================================================================================================================
+1. notifikasyon yapisi degistirildi.
+2. ARC_NOTIFICATION tablosu degisti.
+3. Imza JMS lerine ek is olarak notifikasyonlarin uretilmesi gorevi yuklendi. Bu sayede OUTPUT_OPTIONS alanina gore select yapilmasi gerekmeyecek.
+4. Mail gonderim job i degisti, Selectlerini fatura tablosundan degil Notifikasyon tablosundan yapacak ve goruntu uretmek yerine sadece mail gonderecek. JMS kullanir
+5. Sftp aktarim job i degisti, Notifikasyon tablosunda yer alan kayitlardan okuyarak o musteriye ait ftp aktarimlarini yapacak, goruntu uretmeyecek. JMS kullanmaz(1 conn many upload icin).
+6. Fatura iptal servisi cagrildiginda Bu fatura iptal edilmistir capraz yazili notifikasyon uretimi.
+7. Yeniden tetikleme ws inde notifikasyon surecinin degismesi ile alakali degisiklikler. Anlik gonderim yerine sadece notifkasyon uretimi yapiliyor. Gonderimden job sorumlu.
+8. Fatura tablosuna IS_READ ve IS_ARCHIVED alanlari eklendi.
+
+
+Gecis Oncesi Hazirliklar:
+1. Tum joblar durdurulur.
+2. mail gonderim job inin bekleyen tum faturalarin mail gonderimini tamamlamasi beklenir. ardinda mailsender ve ftpuploader joblari da durdurulur ve remove edilir.
+2. ORACLE DB icin asagidaki scriptler calistirilir:
+
+-- ########## ADMIN LOGGER TABLOLARI ##########
+--CREATE TABLE "ARC_IC_LOGS_GEN" (
+		"NAME" NVARCHAR2(255) NOT NULL,
+		"VALUE" NUMBER(19 , 0) NOT NULL
+	);
+CREATE TABLE "ARC_IC_LOGS" (
+"IDX" NUMBER(19 , 0) NOT NULL,
+"CIDENTIFIER" NVARCHAR2(255),
+"INSERT_DATETIME" DATE,
+"UUID" NVARCHAR2(255),
+"TYPE" NUMBER(10 , 0) NOT NULL,
+"LOG" NVARCHAR2(2000)
+);
+--ALTER TABLE "ARC_IC_LOGS" ADD CONSTRAINT "PK_ARC_IC_LOGS_873" PRIMARY KEY ("IDX");
+--ALTER TABLE "ARC_IC_LOGS_GEN" ADD CONSTRAINT "PK_ARC_IC_LOGS_GEN_602" PRIMARY KEY ("NAME");
+
+
+-- ########## YENI NOTIFIKASYON TABLOLARI ##########
+--CREATE TABLE "ARC_DOC_VIEW_GENERATORS" (
+		"NAME" NVARCHAR2(255) NOT NULL,
+		"VALUE" NUMBER(19 , 0) NOT NULL
+	);
+--CREATE TABLE "ARC_DOC_VIEW" (
+		"IDX" NUMBER(19 , 0) NOT NULL,
+		"CONTENT" BLOB,
+		"SYS_LAST_UPDATE" TIMESTAMP(6),
+		"DOC_CONTENT_TYPE" NVARCHAR2(25),
+		"INV_UUID" NVARCHAR2(36),
+		"SYS_VERSION" NUMBER(10 , 0) NOT NULL
+	);
+--ALTER TABLE "ARC_DOC_VIEW_GENERATORS" ADD CONSTRAINT "PK_ARC_DOC_VIEW_GENERATORS_656" PRIMARY KEY ("NAME");
+--ALTER TABLE "ARC_DOC_VIEW" ADD CONSTRAINT "PK_ARC_DOC_VIEW_990" PRIMARY KEY ("IDX");
+	
+--CREATE TABLE "ARC_NTF" (
+		"NTF_UUID" NVARCHAR2(36) NOT NULL,
+		"MAIL_BODY_HTML" CLOB NULL,
+		"TRANSACTION_ID" NVARCHAR2(256),
+		"MAIL_TO" NVARCHAR2(512),
+		"RETRY_COUNT" NUMBER(10 , 0) NOT NULL,
+		"SUBJECT" NVARCHAR2(256),
+		"SYS_LAST_UPDATE" TIMESTAMP(6),
+		"INV_ID" NVARCHAR2(16),
+		"STATUS_DATE" DATE,
+		"NTF_TYPE" NVARCHAR2(255),
+		"SYS_VERSION" NUMBER(10 , 0) NOT NULL,
+		"MAIL_FROM" NVARCHAR2(128),
+		"OUTPUT_FILE_NAME" NVARCHAR2(255),
+		"INV_UUID" NVARCHAR2(36) NOT NULL,
+		"DOC_CONTENT_TYPE" NVARCHAR2(25),
+		"ISSUE_DATE" DATE,
+		"PROCESS_DATE" DATE,
+		"STATUS_DESC" NVARCHAR2(256),
+		"CIDENTIFIER" NVARCHAR2(11),
+		"CBRANCH" NVARCHAR2(11),
+		"STATUS_ID" NUMBER(5 , 0)
+	);
+	
+--ALTER TABLE "ARC_NTF" ADD CONSTRAINT "PK_ARC_NTF_87" PRIMARY KEY ("NTF_UUID");
+
+
+-- ########## ZARF INDEXLER ########## --
+--CREATE INDEX ARC_ENVELOPE_IDX1 ON ARC_ENVELOPE(STATUS_ID, RETRY_COUNT, PROCESS_DATE, ENV_UUID);
+
+
+-- ########## FATURA INDEXLER ########## --
+--CREATE INDEX ARC_INVOICE_IDX1 ON ARC_INVOICE(STATUS_ID, SIGN_ATTEMPT, UUID);
+
+--CREATE INDEX ARC_INVOICE_IDX2 ON ARC_INVOICE(ISSUE_DATE, CIDENTIFIER, STATUS_ID, CBRANCH);
+
+--CREATE INDEX ARC_INVOICE_IDX3 ON ARC_INVOICE(PROCESS_DATE, CIDENTIFIER, STATUS_ID, CBRANCH);
+
+-- ########## NOTIFIKASYON INDEXLER ########## --
+--CREATE INDEX ARC_NTF_IDX1 ON ARC_NTF(STATUS_ID, NTF_TYPE, NTF_UUID);
+--CREATE INDEX ARC_DOC_VIEW_IDX1 ON ARC_DOC_VIEW (DOC_CONTENT_TYPE,INV_UUID);
+
+
+
+-- ########## FATURA ve FATURA IPTAL TABLOLARINA EKLENEN ALANLAR ##########
+--ALTER TABLE ARC_INVOICE ADD "IS_READ" NUMBER(5 , 0);
+--ALTER TABLE ARC_INVOICE ADD "IS_ARCHIVED" NUMBER(5 , 0);
+--ALTER TABLE ARC_INVOICE_CANCEL_INFO ADD "IS_READ" NUMBER(5 , 0);
+--ALTER TABLE ARC_INVOICE_CANCEL_INFO ADD "IS_ARCHIVED" NUMBER(5 , 0);
+
+
+=================================================================================================================================
+v1.2.3			
+2016.03.21
+=================================================================================================================================
+1. mail smtp port bug fix.
+2. mailjob performans olcum loglari kaldirildi.
+3. xsltjob performans olcum loglari kaldirildi.
+4. signerjob performans olcum loglari kaldirildi.
+5. Fatura tablosuna ek alanlar eklendi.
+6. Dinamik mail subject ve parametrize body
+7. Faturadaki ek kur ve odeme bilgilerinin tabloya yazilmasi (5 ile ayni madde)
+8. Fatura sematron kontrolunun guncellenmesi
+9. To, CC ve BCC'ye noktali virgulle ayrilmis 256 karaktere kadar adres eklenebilmeli
+10.GIB kaydi aktif degilse fatura-iptal gonderimi engellenmeli
+
+Gecis Oncesi Hazirliklar:
+1. Tum joblar durdurulur. Remove edilir.
+2. ORACLE DB icin asagidaki scriptler calistirilir:
+
+ALTER TABLE ARC_INV_DET ADD LMT_TAX_EXCL_AMNT NUMBER(18 , 2);
+ALTER TABLE ARC_INV_DET ADD LMT_TAX_EXCL_AMNT_CURR NVARCHAR2(3);
+
+ALTER TABLE ARC_INV_DET ADD LMT_TAX_INCL_AMNT NUMBER(18 , 2);
+ALTER TABLE ARC_INV_DET ADD LMT_TAX_INCL_AMNT_CURR NVARCHAR2(3);
+
+ALTER TABLE ARC_INV_DET ADD LMT_LINE_EXT_AMNT NUMBER(18 , 2);
+ALTER TABLE ARC_INV_DET ADD LMT_LINE_EXT_AMNT_CURR NVARCHAR2(3);
+
+ALTER TABLE ARC_INV_DET ADD LMT_PYBL_AMNT NUMBER(18 , 2);
+ALTER TABLE ARC_INV_DET ADD LMT_PYBL_AMNT_CURR NVARCHAR2(3);
+
+ALTER TABLE ARC_INV_DET ADD LMT_CHRG_TOTAL_AMNT NUMBER(18 , 2);
+ALTER TABLE ARC_INV_DET ADD LMT_CHRG_TOTAL_AMNT_CURR NVARCHAR2(3);
+
+ALTER TABLE ARC_INV_DET ADD LMT_ALLW_TOTAL_AMNT NUMBER(18 , 2);
+ALTER TABLE ARC_INV_DET ADD LMT_ALLW_TOTAL_AMNT_CURR NVARCHAR2(3);
+
+ALTER TABLE ARC_INV_DET ADD LMT_PYBL_RND_AMNT NUMBER(18 , 2);
+ALTER TABLE ARC_INV_DET ADD LMT_PYBL_RND_AMNT_CURR NVARCHAR2(3);
+
+
+ALTER TABLE ARC_INV_DET ADD PRER_SOURCE_CURR NVARCHAR2(3);
+ALTER TABLE ARC_INV_DET ADD PRER_TARGET_CURR NVARCHAR2(3);
+ALTER TABLE ARC_INV_DET ADD PRER_CALCULATION_RATE NUMBER(18 , 6);
+ALTER TABLE ARC_INV_DET ADD PRER_DATE DATE;
+
+
+ALTER TABLE ARC_INV_DET ADD PROFILE_ID NVARCHAR2(20);
+ALTER TABLE ARC_INV_DET ADD INVOICE_TYPE_CODE NVARCHAR2(20);
+
+ALTER TABLE ARC_NOTIFICATION ADD SUBJECT NVARCHAR2(256);
+
+3. Deployment yapilir.
+
+Gecis Sonrasi Yapilacaklar:
+1. joblar standart sekliyle yeniden kurulur.

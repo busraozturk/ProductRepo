@@ -1,0 +1,234 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<link rel="shortcut icon" href="../resources/favicon.ico" />
+<title>Client WS Monitoring</title>
+
+<link rel="stylesheet" type="text/css" href="../resources/style.css" />
+<link rel="stylesheet" type="text/css"
+	href="../resources/js/css/jquery-ui.css" />
+<link rel="stylesheet" type="text/css"
+	href="../resources/js/css/jquery-ui-timepicker-addon.css" />
+<link rel="stylesheet" type="text/css" href="../resources/style.css" />
+
+<script src="../resources/js/jquery-1.9.1.js"></script>
+<script src="../resources/js/jquery-ui-1.10.3.js"></script>
+<script src="../resources/js/jquery-ui-timepicker-addon.js"></script>
+<script>
+			$(function() {
+				$( "#filterForm\\:startDate" ).datetimepicker({
+					dateFormat: 'dd/mm/yy',
+					timeFormat: 'HH:mm:ss'
+				});
+				$( "#filterForm\\:endDate" ).datetimepicker({
+					dateFormat: 'dd/mm/yy',
+					timeFormat: 'HH:mm:ss'
+				});
+				$( "#accordion" ).accordion();
+			});
+		</script>
+</head>
+<body>
+<f:view>
+	<h:form>
+		<strong>Client WS Monitoring</strong>
+		<h:commandButton value="Refresh"
+			action="#{clientWSMonitoringManagedBean.refresh}" />
+	</h:form>
+	<a href="admin.jsf">Admin Home</a>
+	<br />
+	<br />
+
+	<h:form id="filterForm">
+    		SenderID: <h:inputText size="11"
+			value="#{clientWSMonitoringManagedBean.senderID}" />&nbsp;
+    		UUID: <h:inputText size="36"
+			value="#{clientWSMonitoringManagedBean.uuid}" />&nbsp;
+    		StartDate: <h:inputText id="startDate" size="16"
+			value="#{clientWSMonitoringManagedBean.startDate}" />&nbsp;
+    		EndDate: <h:inputText id="endDate" size="16"
+			value="#{clientWSMonitoringManagedBean.endDate}" />&nbsp;
+			ResultSize: <h:inputText id="ResultSize" size="16"
+			value="#{clientWSMonitoringManagedBean.resultSize}" />&nbsp;
+    		<h:commandButton value="Filter"
+			action="#{clientWSMonitoringManagedBean.refresh}" />
+			
+		<h:commandButton value="Reset"
+			action="#{clientWSMonitoringManagedBean.reset}" />
+
+	</h:form>
+	<br />
+	<h:form>
+		<h:commandButton value="SendInvoice"
+			styleClass="#{clientWSMonitoringManagedBean.logTypeCode == clientWSMonitoringManagedBean.sendInvoiceLogType ? 'customButtonInverse' : 'customButton'}"
+			action="#{clientWSMonitoringManagedBean.refresh}">
+			<f:setPropertyActionListener
+				value="#{clientWSMonitoringManagedBean.sendInvoiceLogType}"
+				target="#{clientWSMonitoringManagedBean.logTypeCode}" />
+		</h:commandButton>
+		<h:commandButton value="GetStatus"
+			styleClass="#{clientWSMonitoringManagedBean.logTypeCode == clientWSMonitoringManagedBean.getStatusLogType ? 'customButtonInverse' : 'customButton'}"
+			action="#{clientWSMonitoringManagedBean.refresh}">
+			<f:setPropertyActionListener
+				value="#{clientWSMonitoringManagedBean.getStatusLogType}"
+				target="#{clientWSMonitoringManagedBean.logTypeCode}" />
+		</h:commandButton>
+		<h:commandButton value="GetInvoiceDocument"
+			styleClass="#{clientWSMonitoringManagedBean.logTypeCode == clientWSMonitoringManagedBean.getInvoiceDocumentLogType ? 'customButtonInverse' : 'customButton'}"
+			action="#{clientWSMonitoringManagedBean.refresh}">
+			<f:setPropertyActionListener
+				value="#{clientWSMonitoringManagedBean.getInvoiceDocumentLogType}"
+				target="#{clientWSMonitoringManagedBean.logTypeCode}" />
+		</h:commandButton>
+		<h:commandButton value="GetSignedInvoice"
+			styleClass="#{clientWSMonitoringManagedBean.logTypeCode == clientWSMonitoringManagedBean.getSignedInvoiceLogType ? 'customButtonInverse' : 'customButton'}"
+			action="#{clientWSMonitoringManagedBean.refresh}">
+			<f:setPropertyActionListener
+				value="#{clientWSMonitoringManagedBean.getSignedInvoiceLogType}"
+				target="#{clientWSMonitoringManagedBean.logTypeCode}" />
+		</h:commandButton>
+		<h:commandButton value="CancelInvoice"
+			styleClass="#{clientWSMonitoringManagedBean.logTypeCode == clientWSMonitoringManagedBean.cancelInvoiceLogType ? 'customButtonInverse' : 'customButton'}"
+			action="#{clientWSMonitoringManagedBean.refresh}">
+			<f:setPropertyActionListener
+				value="#{clientWSMonitoringManagedBean.cancelInvoiceLogType}"
+				target="#{clientWSMonitoringManagedBean.logTypeCode}" />
+		</h:commandButton>
+		<h:commandButton value="SendEnvelope"
+			styleClass="#{clientWSMonitoringManagedBean.logTypeCode == clientWSMonitoringManagedBean.sendEnvelopeLogType ? 'customButtonInverse' : 'customButton'}"
+			action="#{clientWSMonitoringManagedBean.refresh}">
+			<f:setPropertyActionListener
+				value="#{clientWSMonitoringManagedBean.sendEnvelopeLogType}"
+				target="#{clientWSMonitoringManagedBean.logTypeCode}" />
+		</h:commandButton>
+		<h:commandButton value="DetailedInvoiceQuery"
+			styleClass="#{clientWSMonitoringManagedBean.logTypeCode == clientWSMonitoringManagedBean.detailedInvoiceQueryLogType ? 'customButtonInverse' : 'customButton'}"
+			action="#{clientWSMonitoringManagedBean.refresh}">
+			<f:setPropertyActionListener
+				value="#{clientWSMonitoringManagedBean.detailedInvoiceQueryLogType}"
+				target="#{clientWSMonitoringManagedBean.logTypeCode}" />
+		</h:commandButton>
+		<h:commandButton value="GenerateInvID"
+			styleClass="#{clientWSMonitoringManagedBean.logTypeCode == clientWSMonitoringManagedBean.generateInvIDLogType ? 'customButtonInverse' : 'customButton'}"
+			action="#{clientWSMonitoringManagedBean.refresh}">
+			<f:setPropertyActionListener
+				value="#{clientWSMonitoringManagedBean.generateInvIDLogType}"
+				target="#{clientWSMonitoringManagedBean.logTypeCode}" />
+		</h:commandButton>
+		<h:commandButton value="GetUserList"
+			styleClass="#{clientWSMonitoringManagedBean.logTypeCode == clientWSMonitoringManagedBean.getUserListLogType ? 'customButtonInverse' : 'customButton'}"
+			action="#{clientWSMonitoringManagedBean.refresh}">
+			<f:setPropertyActionListener
+				value="#{clientWSMonitoringManagedBean.getUserListLogType}"
+				target="#{clientWSMonitoringManagedBean.logTypeCode}" />
+		</h:commandButton>
+		<h:commandButton value="Retrigger"
+			styleClass="#{clientWSMonitoringManagedBean.logTypeCode == clientWSMonitoringManagedBean.retriggerLogType ? 'customButtonInverse' : 'customButton'}"
+			action="#{clientWSMonitoringManagedBean.refresh}">
+			<f:setPropertyActionListener
+				value="#{clientWSMonitoringManagedBean.retriggerLogType}"
+				target="#{clientWSMonitoringManagedBean.logTypeCode}" />
+		</h:commandButton>
+		<br />
+		<br />
+		<h:commandButton value="SendReport"
+			styleClass="#{clientWSMonitoringManagedBean.logTypeCode == clientWSMonitoringManagedBean.sendReportLogType ? 'customButtonInverse' : 'customButton'}"
+			action="#{clientWSMonitoringManagedBean.refresh}">
+			<f:setPropertyActionListener
+				value="#{clientWSMonitoringManagedBean.sendReportLogType}"
+				target="#{clientWSMonitoringManagedBean.logTypeCode}" />
+		</h:commandButton>
+		<h:commandButton value="GetReportStatus"
+			styleClass="#{clientWSMonitoringManagedBean.logTypeCode == clientWSMonitoringManagedBean.getReportStatusLogType ? 'customButtonInverse' : 'customButton'}"
+			action="#{clientWSMonitoringManagedBean.refresh}">
+			<f:setPropertyActionListener
+				value="#{clientWSMonitoringManagedBean.getReportStatusLogType}"
+				target="#{clientWSMonitoringManagedBean.logTypeCode}" />
+		</h:commandButton>
+		<h:commandButton value="GetReportList"
+			styleClass="#{clientWSMonitoringManagedBean.logTypeCode == clientWSMonitoringManagedBean.getReportListLogType ? 'customButtonInverse' : 'customButton'}"
+			action="#{clientWSMonitoringManagedBean.refresh}">
+			<f:setPropertyActionListener
+				value="#{clientWSMonitoringManagedBean.getReportListLogType}"
+				target="#{clientWSMonitoringManagedBean.logTypeCode}" />
+		</h:commandButton>
+		<h:commandButton value="GetReportData"
+			styleClass="#{clientWSMonitoringManagedBean.logTypeCode == clientWSMonitoringManagedBean.getReportDataLogType ? 'customButtonInverse' : 'customButton'}"
+			action="#{clientWSMonitoringManagedBean.refresh}">
+			<f:setPropertyActionListener
+				value="#{clientWSMonitoringManagedBean.getReportDataLogType}"
+				target="#{clientWSMonitoringManagedBean.logTypeCode}" />
+		</h:commandButton>
+		<h:commandButton value="ApproveReport"
+			styleClass="#{clientWSMonitoringManagedBean.logTypeCode == clientWSMonitoringManagedBean.approveReportLogType ? 'customButtonInverse' : 'customButton'}"
+			action="#{clientWSMonitoringManagedBean.refresh}">
+			<f:setPropertyActionListener
+				value="#{clientWSMonitoringManagedBean.approveReportLogType}"
+				target="#{clientWSMonitoringManagedBean.logTypeCode}" />
+		</h:commandButton>
+		<h:commandButton value="GetReportDetail"
+			styleClass="#{clientWSMonitoringManagedBean.logTypeCode == clientWSMonitoringManagedBean.getReportDetailLogType ? 'customButtonInverse' : 'customButton'}"
+			action="#{clientWSMonitoringManagedBean.refresh}">
+			<f:setPropertyActionListener
+				value="#{clientWSMonitoringManagedBean.getReportDetailLogType}"
+				target="#{clientWSMonitoringManagedBean.logTypeCode}" />
+		</h:commandButton>
+		<h:commandButton value="ReconciliationCheck"
+			styleClass="#{clientWSMonitoringManagedBean.logTypeCode == clientWSMonitoringManagedBean.reconciliatinCheckLogType ? 'customButtonInverse' : 'customButton'}"
+			action="#{clientWSMonitoringManagedBean.refresh}">
+			<f:setPropertyActionListener
+				value="#{clientWSMonitoringManagedBean.reconciliatinCheckLogType}"
+				target="#{clientWSMonitoringManagedBean.logTypeCode}" />
+		</h:commandButton>
+		<br />
+	</h:form>
+
+	<h:form>
+		<div id="accordion">
+
+		<h3><strong>WS Logs</strong></h3>
+		<div class="accLongTableDiv"><h:dataTable id="logDataTable"
+			value="#{clientWSMonitoringManagedBean.logs}" var="log"
+			styleClass="table" headerClass="table-header"
+			columnClasses="table-column"
+			rowClasses="table-odd-row,table-even-row">
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="IDX" />
+				</f:facet>
+				<h:outputText value="#{log.idx}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="SenderID" />
+				</f:facet>
+				<h:outputText value="#{log.cidentifier}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="UUID" />
+				</f:facet>
+				<h:outputText value="#{log.uuid}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="InsertDateTime" />
+				</f:facet>
+				<h:outputText value="#{log.insertDateTime}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Log" />
+				</f:facet>
+				<h:outputText value="#{log.log}" />
+			</h:column>
+		</h:dataTable></div>
+		</div>
+	</h:form>
+</f:view>
+</body>
+</html>

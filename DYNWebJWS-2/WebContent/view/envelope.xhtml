@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" template="/layout/template.xhtml">
+
+	<ui:define name="content">
+		<rich:panel id="envPanel">
+			<h:form>
+				<rich:tabPanel id="tab">
+					<rich:tab label="UUID ile ara">
+						<h:panelGrid columns="2">
+							<h:outputText value="UUID :" />
+							<h:inputText value="#{envelopePage.UUID}" style="width:350px" />
+						</h:panelGrid>
+
+						<a4j:commandButton value="Ara" action="#{envelopePage.findByUUID}"
+							reRender="envDataTable,hata" />
+							<h:outputText id="hata" value="#{envelopePage.error}"/>
+					</rich:tab>
+				</rich:tabPanel>
+				<br />
+				<rich:dataTable id="envDataTable" value="#{envelopePage.envelopes}"
+					var="env" styleClass="table" headerClass="table -header"
+					columnClasses="table-column"
+					rowClasses="table-odd-row,table-even-row" rows="20" rendered="#{envelopePage.dataTable}">
+					<f:facet name="header">
+						<h:outputText value="Find Envelope" />
+					</f:facet>
+					<rich:column>
+						<f:facet name="header">
+							<h:outputText value="UUID" />
+						</f:facet>
+						<h:outputText value="#{env.envelopeUUID}" />
+					</rich:column>
+					<rich:column>
+						<f:facet name="header">
+							<h:outputText value="Doc Type" />
+						</f:facet>
+						<h:outputText value="#{env.docType}" />
+					</rich:column>
+					<rich:column>
+						<f:facet name="header">
+							<h:outputText value="Sender ID" />
+						</f:facet>
+						<h:outputText value="#{env.senderID}" />
+					</rich:column>
+					<rich:column>
+						<f:facet name="header">
+							<h:outputText value="Proccess Date" />
+						</f:facet>
+						<h:outputText value="#{env.processDate}" />
+					</rich:column>
+					<rich:column>
+						<f:facet name="header">
+							<h:outputText value="Status" />
+						</f:facet>
+						<h:outputText value="#{env.status.statusId}" />
+					</rich:column>
+				</rich:dataTable>
+
+			</h:form>
+		</rich:panel>
+
+
+	</ui:define>
+</ui:composition>

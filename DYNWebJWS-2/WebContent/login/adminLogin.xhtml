@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<head>
+<link rel="shortcut icon" href="../resources/favicon.ico" />
+<link rel="stylesheet" type="text/css" href="../resources/style.css" />
+<title>FIT eArchive Admin Page</title>
+</head>
+<body>
+
+<f:view>
+	<div class="adminContainerDiv">
+
+	<div class="adminTopDiv">
+
+	<div class="adminTopTitle">eArchive Engine Admin Page</div>
+	</div>
+	<br />
+
+	<div class="adminLoginDiv"><br />
+	<hr />
+	<br />
+
+	<h:form>
+		<div class="adminLoginInput"><h:panelGrid columns="2">
+					Username: <h:inputText value="#{loginManagedBean.username}" />
+					Password: <h:inputSecret value="#{loginManagedBean.password}" />
+		</h:panelGrid></div>
+		<div class="adminLoginButton"><h:commandButton value="Login"
+			action="#{loginManagedBean.login}" /></div>
+		<div class="adminLoginMessage"><h:outputText
+			value="#{loginManagedBean.loginMessage}" /><br />
+		</div>
+	</h:form> <br />
+	<hr />
+	<br />
+
+	</div>
+
+	</div>
+
+</f:view>
+</body>
+</html>

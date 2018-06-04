@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" template="/layout/template.xhtml">
+
+	<ui:define name="content">
+		<rich:panel>
+			<h:form id="reportForm">
+				<rich:tabPanel>
+					<rich:tab label="UUID ile ara">
+						<h:panelGrid columns="2">
+							<h:outputText value="UUID :" />
+							<h:inputText value="#{reportPage.uuid}" />
+						</h:panelGrid>
+						<a4j:commandButton value="Ara" action="#{reportPage.findReport}"
+							reRender="repDataTable" />
+					</rich:tab>
+				</rich:tabPanel>
+				<rich:dataTable id="repDataTable" value="#{reportPage.reports}"
+					var="rep" styleClass="table" headerClass="table -header"
+					columnClasses="table-column"
+					rowClasses="table-odd-row,table-even-row" rows="20">
+					<f:facet name="header">
+						<h:outputText value="Find Report" />
+					</f:facet>
+
+					<rich:column>
+						<f:facet name="header">
+							<h:outputText value="UUID" />
+						</f:facet>
+						<h:outputText value="#{rep.UUID}" />
+					</rich:column>
+					<rich:column>
+						<f:facet name="header">
+							<h:outputText value="Doc Type" />
+						</f:facet>
+						<h:outputText value="#{rep.docType}" />
+					</rich:column>
+					<rich:column>
+						<f:facet name="header">
+							<h:outputText value="Sender ID" />
+						</f:facet>
+						<h:outputText value="#{rep.senderID}" />
+					</rich:column>
+					<rich:column>
+						<f:facet name="header">
+							<h:outputText value=" Sign Attamp" />
+						</f:facet>
+						<h:outputText value="#{rep.signAttamp}" />
+					</rich:column>
+					<rich:column>
+						<f:facet name="header">
+							<h:outputText value="Status" />
+						</f:facet>
+						<h:outputText value="#{rep.status.statusId}" />
+					</rich:column>
+					<rich:column>
+						<f:facet name="header">
+							<h:outputText value="Proccess Date" />
+						</f:facet>
+						<h:outputText value="#{rep.processDate}" />
+					</rich:column>
+					<rich:column>
+						<f:facet name="header">
+							<h:outputText value="Detail" />
+						</f:facet>
+						<a4j:commandButton value="Detail" action="#{reportPage.findPart}"
+							image="#{bundle['image.view']}" reRender="detailPanel,Detail"
+							oncomplete="#{rich:component('Detail')}.show()" />
+					</rich:column>
+				</rich:dataTable>
+			</h:form>
+		</rich:panel>
+
+		<h:panelGroup id="detailPanel">
+			<rich:modalPanel id="Detail" width="500" height="400">
+				<f:facet name="header">
+					<h:outputText value="Report Details" />
+				</f:facet>
+				<h:form>
+					<h:panelGrid columns="2">
+						<h:outputText value="UUID :" style="width: 370px;" />
+						<h:outputText value="#{reportPage.part.uuid}"
+							style="width: 370px;" />
+
+						<h:outputText value="Start Date :" style="width: 370px;" />
+						<h:outputText value="#{reportPage.part.sectionStartDate}"
+							style="width: 370px;" />
+						<h:outputText value="End Date :" style="width: 370px;" />
+						<h:outputText value="#{reportPage.part.sectionEndDate}"
+							style="width: 370px;" />
+						<h:outputText value="Invoice Count :" style="width: 370px;" />
+						<h:outputText value="#{reportPage.part.invoiceCount}"
+							style="width: 370px;" />
+						<h:outputText value="Invoice Total Amount :" style="width: 370px;" />
+						<h:outputText value="#{reportPage.part.invoiceTotalAmount}"
+							style="width: 370px;" />
+						<h:outputText value="Cancel Invoice Count :" style="width: 370px;" />
+						<h:outputText value="#{reportPage.part.cancelInvoiceCount}"
+							style="width: 370px;" />
+						<h:outputText value="Cancel Invoice Total Amount :"
+							style="width: 370px;" />
+						<h:outputText value="#{reportPage.part.calcelInvoiceTotalAmount}"
+							style="width: 370px;" />
+						<h:outputText value="Tckn-Vkn :" style="width: 370px;" />
+						<h:outputText value="#{reportPage.part.tcknVkn}"
+							style="width: 370px;" />
+						<h:outputText value="Period Code :" style="width: 370px;" />
+						<h:outputText value="#{reportPage.part.periodCode}"
+							style="width: 370px;" />
+						<h:outputText value="Part Number :" style="width: 370px;" />
+						<h:outputText value="#{reportPage.part.partNumber}"
+							style="width: 370px;" />
+					</h:panelGrid>
+					<a4j:commandButton value="OK"
+						oncomplete="#{rich:component('Detail')}.hide();"
+						style="width: 125px;" />
+					
+					<a4j:commandButton value="Cancel"
+						oncomplete="#{rich:component('Detail')}.hide();"
+						style="width: 125px;" />
+					
+				</h:form>
+			</rich:modalPanel>
+
+		</h:panelGroup>
+	</ui:define>
+</ui:composition>

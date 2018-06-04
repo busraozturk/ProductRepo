@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" 
+	template="/layout/template.xhtml">
+
+	<ui:define name="content">
+		<a4j:keepAlive beanName="customerInvoiceIdPage" ajaxOnly="true" />
+		<fieldset>
+			<legend><h:outputText value="Customer Invoice ID Panel" /></legend>
+			<h:form id="MainForm">
+				<a4j:poll id="poll" interval="2500" action="#{customerInvoiceIdPage.search}" rendered="#{customerInvoiceIdPage.rendered}"  reRender="MainForm,CustomerInvIdGeneratorTable" />
+				<h:panelGrid columns="3">
+					<h:outputText value="CIDENTIFIER(VKN/TCKN):" style="color:red; font-weight: bold;"/>
+					<rich:comboBox value="#{customerInvoiceIdPage.cidentifier}" suggestionValues="#{customerInvoiceIdPage.customersInvoiceId}" directInputSuggestions="true" defaultLabel="Enter some customer vkn" />
+					<a4j:commandButton value="Search" image="#{bundle['image.view']}" action="#{customerInvoiceIdPage.search}" reRender="MainForm,CustomerInvIdGeneratorTable" />
+				</h:panelGrid>
+				<br/>
+				<rich:dataTable id="CustomerInvIdGeneratorTable"  rendered="#{customerInvoiceIdPage.rendered}" value="#{customerInvoiceIdPage.customerInvIdGenerators}" var="generator">
+					<rich:column>
+						<f:facet name="header">
+							<h:outputText value="CIDENTIFIER"/>
+						</f:facet>
+						<h:outputText value="#{generator.generatorPK.cidentifier}"/>
+					</rich:column>
+					<rich:column>
+						<f:facet name="header">
+							<h:outputText value="CBRANCH"/>
+						</f:facet>
+						<h:outputText value="#{generator.generatorPK.cbranch}"/>
+					</rich:column>
+					
+					<rich:column>
+						<f:facet name="header">
+							<h:outputText value="INVOICE PREFIX"/>
+						</f:facet>
+						<h:outputText value="#{generator.generatorPK.invprefix}"/>
+					</rich:column>
+					
+					<rich:column>
+						<f:facet name="header">
+							<h:outputText value="LAST ID"/>
+						</f:facet>
+						<h:outputText value="#{generator.lastId}" style="color:red; font-weight: bold;"/>
+					</rich:column>
+					
+					<rich:column>
+						<f:facet name="header">
+							<h:outputText value="LAST UPDATE"/>
+						</f:facet>
+						<h:outputText value="#{generator.lastUpdate}">
+							<f:convertDateTime type="date" pattern="dd/MM/yyyy HH:MM:SS"/>
+						</h:outputText>
+					</rich:column>
+					
+					<rich:column>
+						<f:facet name="header">
+							<h:outputText value="VERSION"/>
+						</f:facet>
+						<h:outputText value="#{generator.version}"/>
+					</rich:column>
+				</rich:dataTable>
+			</h:form>
+		</fieldset>
+	</ui:define>
+</ui:composition>

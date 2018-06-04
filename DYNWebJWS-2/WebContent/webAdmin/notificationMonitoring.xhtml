@@ -1,0 +1,182 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="shortcut icon" href="../resources/favicon.ico" />
+		<title>NTF Monitoring</title>
+
+		<link rel="stylesheet" type="text/css" href="../resources/style.css" />
+		<link rel="stylesheet" type="text/css"
+	href="../resources/js/css/jquery-ui.css" />
+		<link rel="stylesheet" type="text/css"
+	href="../resources/js/css/jquery-ui-timepicker-addon.css" />
+		<link rel="stylesheet" type="text/css" href="../resources/style.css" />
+
+		<script src="../resources/js/jquery-1.9.1.js"/>
+		<script src="../resources/js/jquery-ui-1.10.3.js"/>
+		<script src="../resources/js/jquery-ui-timepicker-addon.js"/>
+		<script>
+	$(function() {
+		$("#filterForm\\:startDate").datetimepicker( {
+			dateFormat : 'dd/mm/yy',
+			timeFormat : 'HH:mm:ss'
+		});
+		$("#filterForm\\:endDate").datetimepicker( {
+			dateFormat : 'dd/mm/yy',
+			timeFormat : 'HH:mm:ss'
+		});
+		$("#accordion").accordion();
+	});
+		</script>
+	</head>
+	<body>
+		<f:view>
+			<h:form>
+				<strong>Notification Monitoring</strong>
+			</h:form>
+			<br />
+			<br />
+			<a href="admin.jsf">Admin Home</a>
+			<br />
+			<br />
+
+			<h:form id="filterForm">
+				<h:panelGrid columns="2" border="1">
+					<h:panelGrid columns="4">
+						<h:outputLabel value="VKN/TCKN" />
+						<h:selectOneMenu id="VKN"
+					value="#{notificationMonitoringManagedBean.selectedVkn}"
+					valueChangeListener="#{notificationMonitoringManagedBean.refreshBranchSI}"
+					onchange="submit()" immediate="true">
+							<f:selectItems
+						value="#{notificationMonitoringManagedBean.vknSIList}" />
+						</h:selectOneMenu>
+						<h:outputLabel value="Şube" />
+						<h:selectOneMenu id="Branch"
+					value="#{notificationMonitoringManagedBean.selectedBranch}">
+							<f:selectItems
+						value="#{notificationMonitoringManagedBean.branchSIList}" />
+						</h:selectOneMenu>
+						<h:outputLabel value="Notifikasyon Türü" />
+
+						<h:selectOneMenu id="NTFType"
+					value="#{notificationMonitoringManagedBean.ntfType}">
+							<f:selectItems
+						value="#{notificationMonitoringManagedBean.ntfTypeSIList}" />
+						</h:selectOneMenu>
+						<h:outputLabel value="Durum" />
+						<h:selectOneMenu id="Status"
+					value="#{notificationMonitoringManagedBean.statusName}">
+							<f:selectItems
+						value="#{notificationMonitoringManagedBean.statusSIList}" />
+						</h:selectOneMenu>
+
+						<h:outputLabel value="Kayıt Sayısı" />
+						<h:inputText
+					value="#{notificationMonitoringManagedBean.resultLimit}" />
+
+						<f:verbatim />
+						<f:verbatim />
+
+						<!-- h:outputLabel value="Başlangıç Tarihi " / -->
+				Başlangıç Tarihi: <h:inputText id="startDate" size="16"
+					value="#{notificationMonitoringManagedBean.startDate}" />&nbsp;
+						<f:verbatim />
+						<f:verbatim />
+						<!--h:outputLabel value="Bitiş Tarihi " / -->
+				Bitiş Tarihi: <h:inputText id="endDate" size="16"
+					value="#{notificationMonitoringManagedBean.endDate}" />&nbsp;
+						<f:verbatim />
+						<f:verbatim />
+						<h:commandButton value="Filter"
+					action="#{notificationMonitoringManagedBean.filter}" />
+						<br />
+					</h:panelGrid>
+
+					<h:panelGrid columns="1">
+						<h:selectOneRadio label="Fatura UUID ile ara"
+					value="#{notificationMonitoringManagedBean.findParam}">
+							<f:selectItem itemValue="false" itemLabel="Fatura Id ile ara"/>
+							<f:selectItem itemValue="true" itemLabel="Fatura UUID ile ara"/>
+						</h:selectOneRadio>
+
+						<h:inputText value="#{notificationMonitoringManagedBean.invKey}"
+					size="36" />
+						<br />
+						<h:commandButton value="Filter"
+					action="#{notificationMonitoringManagedBean.filterByInvoiceIDorInvUUID}" />
+					</h:panelGrid>
+				</h:panelGrid>
+			</h:form>
+
+
+			<br />
+			<h:form id="DataTable">
+				<div id="accordion">
+					<h3>
+						<strong>NTF Logs</strong>
+					</h3>
+					<div class="accLongTableDiv">
+						<h:dataTable id="logDataTable"
+			value="#{notificationMonitoringManagedBean.notifications}" var="log"
+			styleClass="table" headerClass="table-header"
+			columnClasses="table-column"
+			rowClasses="table-odd-row,table-even-row">
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="VKN" />
+								</f:facet>
+								<h:outputText value="#{log.customerSetting.pk.cidentifier}" />
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="Şube" />
+								</f:facet>
+								<h:outputText value="#{log.customerSetting.pk.cbranch}" />
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="UUID" />
+								</f:facet>
+								<h:outputText value="#{log.invoiceUUID}" />
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="InvoiceID" />
+								</f:facet>
+								<h:outputText value="#{log.invoiceID}" />
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="Düzenleme Tarihi" />
+								</f:facet>
+								<h:outputText value="#{log.invIssueDate}" />
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="Gönderim Zamanı" />
+								</f:facet>
+								<h:outputText value="#{log.statusUpDate}" />
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="STATUS" />
+								</f:facet>
+								<h:outputText value="#{log.status.statusId}" />
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="DESC" />
+								</f:facet>
+								<h:outputText value="#{log.statusDesc}" />
+							</h:column>
+						</h:dataTable>
+					</div>
+				</div>
+			</h:form>
+		</f:view>
+	</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" template="/layout/template2.xhtml">
+
+	<ui:define name="content">
+		<rich:panel>
+			<h:form>
+				<rich:tabPanel>
+					<rich:tab label="System Check">
+						<h:panelGrid columns="3">
+							<rich:dataTable id="SignerDataTable"
+								value="#{analysisPage.signerResponse}" var="resp"
+								styleClass="table" headerClass="table -header"
+								columnClasses="table-column"
+								rowClasses="table-odd-row,table-even-row" rows="20">
+								<f:facet name="header">
+									<h:outputText value="Signer" />
+								</f:facet>
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText value="PORT" />
+									</f:facet>
+									<h:outputText value="#{resp.port}" />
+								</rich:column>
+
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText value="TELNET" />
+									</f:facet>
+									<h:outputText value="#{resp.telnet}"
+										style="color: #{resp.telnet? 'green':'red'}" />
+								</rich:column>
+
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText value="SIGNING" />
+									</f:facet>
+									<h:outputText value="#{resp.sign}"
+										style="color: #{resp.sign? 'green':'red'}" />
+								</rich:column>
+								<f:facet name="footer">
+									<rich:datascroller id="datascroller" />
+								</f:facet>
+
+							</rich:dataTable>
+
+
+							<rich:dataTable id="SFTPDataTable"
+								value="#{analysisPage.sftpResponse}" var="respsftp"
+								styleClass="table" headerClass="table -header"
+								columnClasses="table-column"
+								rowClasses="table-odd-row,table-even-row" rows="20">
+								<f:facet name="header">
+									<h:outputText value="SFTP" />
+								</f:facet>
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText value="VKN" />
+									</f:facet>
+									<h:outputText value="#{respsftp.vkn}" />
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText value="Branch" />
+									</f:facet>
+									<h:outputText value="#{respsftp.branch}" />
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText value="ADRESS" />
+									</f:facet>
+									<h:outputText value="#{respsftp.adress}" />
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText value="PORT" />
+									</f:facet>
+									<h:outputText value="#{respsftp.port}" />
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText value="TELNET" />
+									</f:facet>
+									<h:outputText value="#{respsftp.telnet}"
+										style="color: #{respsftp.telnet? 'green':'red'}" />
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText value="CONNECTİON" />
+									</f:facet>
+									<h:outputText value="#{respsftp.connection}"
+										style="color: #{respsftp.connection? 'green':'red'}" />
+								</rich:column>
+								<f:facet name="footer">
+									<rich:datascroller id="datascroller" />
+								</f:facet>
+							</rich:dataTable>
+
+
+							<rich:dataTable id="SMTPDataTable"
+								value="#{analysisPage.smtpResponse}" var="respsmtp"
+								styleClass="table" headerClass="table -header"
+								columnClasses="table-column"
+								rowClasses="table-odd-row,table-even-row" rows="20">
+								<f:facet name="header">
+									<h:outputText value="SMTP" />
+								</f:facet>
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText value="VKN" />
+									</f:facet>
+									<h:outputText value="#{respsmtp.vkn}" />
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText value="Branch" />
+									</f:facet>
+									<h:outputText value="#{respsmtp.branch}" />
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText value="ADRESS" />
+									</f:facet>
+									<h:outputText value="#{respsmtp.hostName}" />
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText value="PORT" />
+									</f:facet>
+									<h:outputText value="#{respsmtp.port}" />
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText value="TELNET" />
+									</f:facet>
+									<h:outputText value="#{respsmtp.telnet}"
+										style="color: #{respsmtp.telnet? 'green':'red'}" />
+								</rich:column>
+								<f:facet name="footer">
+									<rich:datascroller id="datascroller" />
+								</f:facet>
+							</rich:dataTable>
+						</h:panelGrid>
+						<a4j:commandButton value="Analyze" action="#{analysisPage.testCommunicationMatrix}"
+							reRender="SignerDataTable,SFTPDataTable,SMTPDataTable">
+
+						</a4j:commandButton>
+					</rich:tab>
+
+					<rich:tab label="Mail Check">
+						<h:outputText value="Alıcı :" />
+						<h:inputText value="#{analysisPage.mailReceiver}" />
+
+
+						<a4j:commandButton value="MAIL SEND"
+							action="#{analysisPage.sendMail}" reRender="MailSend" />
+						<rich:dataTable id="MailSend" value="#{analysisPage.mailResp}"
+							var="respMail" styleClass="table" headerClass="table -header"
+							columnClasses="table-column"
+							rowClasses="table-odd-row,table-even-row" rows="20">
+							<f:facet name="header">
+								<h:outputText value="Mail" />
+							</f:facet>
+							<rich:column>
+								<f:facet name="header">
+									<h:outputText value="VKN" />
+								</f:facet>
+								<h:outputText value="#{respMail.vkn}" />
+							</rich:column>
+							<rich:column>
+								<f:facet name="header">
+									<h:outputText value="VKN" />
+								</f:facet>
+								<h:outputText value="#{respMail.branch}" />
+							</rich:column>
+							<rich:column>
+								<f:facet name="header">
+									<h:outputText value="ADRESS" />
+								</f:facet>
+								<h:outputText value="#{respMail.adress}" />
+							</rich:column>
+							<rich:column>
+								<f:facet name="header">
+									<h:outputText value="RESULTS" />
+								</f:facet>
+								<h:outputText value="#{respMail.mailSend}"
+									style="color: #{respMail.mailSend? 'green':'red'}" />
+							</rich:column>
+
+						</rich:dataTable>
+					</rich:tab>
+				</rich:tabPanel>
+			</h:form>
+		</rich:panel>
+	</ui:define>
+</ui:composition>
