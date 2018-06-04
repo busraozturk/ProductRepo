@@ -49,7 +49,7 @@ public abstract class BaseEntity implements Serializable {
 	public void trimAllStringFields() throws Exception {
 		trimStringFields(getClass());
 	}
-
+//testtttttttttttt
 	private void trimStringFields(Class<?> entityClass) throws Exception {
 		if(entityClass != null) {
 			for(Field field : entityClass.getDeclaredFields()) {
